@@ -13,7 +13,7 @@ public class Scaler {
     public static ArrayList<Point> scalePoints(ArrayList<Point> toScale, Coords fromCoords, Coords toCoords)
     {
         toScale.forEach((Point p) -> {
-
+                    )
                 });
     }
 }

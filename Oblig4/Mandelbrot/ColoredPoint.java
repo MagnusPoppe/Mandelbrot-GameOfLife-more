@@ -5,7 +5,7 @@ package Oblig4.Mandelbrot;
  *
  * Created by jooivind on 25.02.2016.
  */
-public interface Scalable {
+public interface ColoredPoint {
     public double getX();
     public double getY();
 }
