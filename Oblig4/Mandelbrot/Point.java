@@ -1,4 +1,4 @@
-package Mandelbrot.Mandelbrot;
+package Oblig4.Mandelbrot;
 
 import javafx.scene.paint.Color;
 

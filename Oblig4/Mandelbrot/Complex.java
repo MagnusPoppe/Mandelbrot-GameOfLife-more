@@ -1,4 +1,4 @@
-package Mandelbrot.Mandelbrot;
+package Oblig4.Mandelbrot;
 
 /**
  * Created by jooivind on 25.02.2016.
