@@ -10,16 +10,22 @@ import javafx.scene.paint.Color;
  * Created by jooivind on 25.02.2016.
  */
 public class Point implements Scalable {
-    private Complex complex;
+    double x,y;
     private Color color;
+    public Point(double x, double y, int iterations)
+    {
+        this.x = x;
+        this.y = y;
+        color = Color.color(iterations, iterations, iterations);
+    }
 
     @Override
     public double getX() {
-        return complex.getReal();
+        return x;
     }
 
     @Override
     public double getY() {
-        return complex.getImaginary();
+        return y;
     }
 }
