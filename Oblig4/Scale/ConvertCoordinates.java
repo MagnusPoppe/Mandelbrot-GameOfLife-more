@@ -47,7 +47,7 @@ public class ConvertCoordinates
 		scalingConstantY = to.getFromY();
 	}
 
-	ColoredPoint convert(ColoredPoint in)
+	public ColoredPoint convert(ColoredPoint in)
 	{
 		// http://gamedev.stackexchange.com/questions/32555/how-do-i-convert-between-two-different-2d-coordinate-systems
 		// dette SKAL funke helt generelt
@@ -58,7 +58,7 @@ public class ConvertCoordinates
 		return in;
 	}
 
-	double computeIncrement()
+	public double computeIncrement()
 	{
 		return 1/scalingFactorX;
 	}
