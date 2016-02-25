@@ -15,7 +15,7 @@ public class Mandelbrot {
     private static final double xRangeDefault = 2.0;
     private static final double yRangeDefault = 2.0;
     private static int iterationLimit = 100;
-    private double increment = 0.01;
+    private double increment = 0.01; // OBS: Må matche med oppløsning på det endelige bildet!
 
     private double xFrom;
     private double xTo;
