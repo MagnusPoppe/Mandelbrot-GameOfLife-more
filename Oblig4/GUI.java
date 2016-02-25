@@ -73,4 +73,9 @@ public class GUI extends Application
             root.setTop(menu);
             root.setCenter(presenter);
     }
+
+    public static void drawColoredPoints( ArrayList<ColoredPoint>)
+    {
+        
+    }
 }
