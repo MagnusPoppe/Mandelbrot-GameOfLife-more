@@ -23,6 +23,7 @@ public class Mandelbrot {
 
     // Instansvariabler
     private ArrayList<Point> generatedData;
+    
     public Mandelbrot()
     {
         this(0.0-xRangeDefault, xRangeDefault, 0.0-yRangeDefault, yRangeDefault);
@@ -59,14 +60,18 @@ public class Mandelbrot {
 
     private static Point calculatePoint(Complex C)
     {
-        Complex x = new Complex();
+        Complex x = new Complex(); // 0+0i
+
         int iterations = 0;
         for(;iterations<iterationLimit;++iterations){
             x = nextIteration(x, C);
             if(x.getLengthSquared()>4.0) break;
         }
-        Color color = Color.rgb(0,0,iterations*255/iterationLimit);
+
+        // Sett farge
+        Color color = new Color(0,0,(55/255.0)+iterations*200/iterationLimit, 1.0); //R(0-1.0) G B Alpha=1.0
         if(iterations==iterationLimit) color = Color.BLACK;
+
         return new Point(C.getReal(), C.getImaginary(), color);
     }
 

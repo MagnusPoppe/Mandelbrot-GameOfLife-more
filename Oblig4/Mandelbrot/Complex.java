@@ -23,7 +23,11 @@ public class Complex {
         this.imaginary = imaginary;
     }
 
-    public Complex square()
+	/**
+         * Gange det komplekse tallet med seg selv
+         * @return svaret
+         */
+        public Complex square()
     {
         double newReal;
         double newImaginary;
