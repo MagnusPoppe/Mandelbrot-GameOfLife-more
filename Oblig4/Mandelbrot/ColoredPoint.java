@@ -7,10 +7,10 @@ import javafx.scene.paint.Color;
  *
  * Created by jooivind on 25.02.2016.
  */
-public interface ColoredPoint {
-    public double getX();
-    public double getY();
-    public void setX(double x);
-    public void setY(double y);
-    public Color getColor();
+public abstract class ColoredPoint {
+    public abstract double getX();
+    public abstract double getY();
+    public abstract void setX(double x);
+    public abstract void setY(double y);
+    public abstract Color getColor();
 }

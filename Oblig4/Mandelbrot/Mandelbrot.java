@@ -81,7 +81,7 @@ public class Mandelbrot {
         }
 
         // Sett farge
-        Color color = new Color(0,0,(55/255.0)+iterations*200/iterationLimit, 1.0); //R(0-1.0) G B Alpha=1.0
+        Color color = new Color(0,0,(55/155.0)+iterations/(iterationLimit+55), 1.0); //R(0-1.0) G B Alpha=1.0
         if(iterations==iterationLimit) color = Color.BLACK;
 
         return new Point(C.getReal(), C.getImaginary(), color);

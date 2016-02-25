@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
  *      - Magnus
  * Created by jooivind on 25.02.2016.
  */
-public class Point implements ColoredPoint {
+public class Point extends ColoredPoint {
     double x,y;
     private Color color;
     public Point(double x, double y, Color color)

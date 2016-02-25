@@ -2,11 +2,17 @@ package Oblig4;/**
  * Created by Magnu on 25.02.2016.
  */
 
-import Oblig4.Mandelbrot.ColoredPoint;
+import Oblig4.Eksempel.CustomWritableImage;
+import Oblig4.Mandelbrot.Mandelbrot;
+import Oblig4.Mandelbrot.Point;
+import Oblig4.Scale.ConvertCoordinates;
+import Oblig4.Scale.Coords;
+import Oblig4.Scale.Scaler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -64,6 +70,7 @@ public class GUI extends Application
         //Definerer menyen:
             menu = new HBox(15);
             mandelbrot = new Label("Mandelbrot");
+            mandelbrot.setOnMouseClicked(e->drawColoredPoints());
             serpinski = new Label("Serpinski");
             tree = new Label("Tree");
             menu.getChildren().addAll(mandelbrot, serpinski, tree);
@@ -77,7 +84,19 @@ public class GUI extends Application
             root.setCenter(presenter);
     }
 
-    public static void drawColoredPoints(ArrayList<ColoredPoint> points)
+    public static void drawColoredPoints()
     {
+            CustomWritableImage wrt = new CustomWritableImage(800,800);
+            Coords mandelCoord = new Coords(-1.5,1.0,-1.25,1.25);
+            ConvertCoordinates conv = new ConvertCoordinates(mandelCoord, wrt.getCoords());
+            Mandelbrot mandel = new Mandelbrot(mandelCoord, conv.computeIncrement());
+            ArrayList<Point> points = mandel.getPoints();
+            points = Scaler.scalePoints(points, mandelCoord, wrt.getCoords());
+            PixelWriter writer = wrt.getPixelWriter();
+            for(Point p : points){
+                   writer.setColor((int)p.getX(), (int)p.getY(), p.getColor());
+            }
+            presenter.setImage(wrt);
+
     }
 }

@@ -41,13 +41,13 @@ public class ConvertCoordinates
 	 */
 	private void computeScalingFactors()
 	{
-		scalingFactorX = (from.getToX()-from.getFromX())/(to.getToX()-to.getFromX());
-		scalingFactorY = (from.getToY()-from.getFromY())/(to.getToY()-to.getFromY());
+		scalingFactorX = (to.getToX()-to.getFromX())/(from.getToX()-from.getFromX());
+		scalingFactorY = (to.getToY()-to.getFromY())/(from.getToY()-from.getFromY());
 		scalingConstantX = to.getFromX();
 		scalingConstantY = to.getFromY();
 	}
 
-	public ColoredPoint convert(ColoredPoint in)
+	public <T extends ColoredPoint> T convert(T in)
 	{
 		// http://gamedev.stackexchange.com/questions/32555/how-do-i-convert-between-two-different-2d-coordinate-systems
 		// dette SKAL funke helt generelt
@@ -60,7 +60,7 @@ public class ConvertCoordinates
 
 	public double computeIncrement()
 	{
-		return 1/scalingFactorX;
+		return 1.0/scalingFactorX;
 	}
 
 

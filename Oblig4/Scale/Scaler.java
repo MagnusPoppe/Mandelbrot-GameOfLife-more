@@ -18,12 +18,10 @@ public class Scaler
 	 * @param toCoords beskrivelse av koordinatsystemet det skal konverteres til
 	 * @return Oppdatert liste (det er den samme)
 	 */
-	public static ArrayList<ColoredPoint> scalePoints(ArrayList<ColoredPoint> toScale, Coords fromCoords, Coords toCoords)
+	public static <T extends ColoredPoint> ArrayList<T> scalePoints(ArrayList<T> toScale, Coords fromCoords, Coords toCoords)
 	{
 		ConvertCoordinates coord = new ConvertCoordinates(fromCoords, toCoords);
-		toScale.forEach((ColoredPoint p) -> {
-			p = coord.convert(p);
-		});
+		toScale.forEach((T p) -> p = coord.convert(p));
 		return toScale;
 	}
 }
