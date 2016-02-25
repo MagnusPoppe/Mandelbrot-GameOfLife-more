@@ -25,6 +25,7 @@ public class ConvertCoordinates
 	{
 		this.from = from;
 		this.to = to;
+		computeScalingFactors();
 	}
 
 	private void computeScalingFactors()
