@@ -12,11 +12,11 @@ import javafx.scene.paint.Color;
 public class Point implements ColoredPoint {
     double x,y;
     private Color color;
-    public Point(double x, double y, int iterations)
+    public Point(double x, double y, Color color)
     {
         this.x = x;
         this.y = y;
-        color = Color.color(iterations, iterations, iterations);
+        this.color = color;
     }
 
     @Override

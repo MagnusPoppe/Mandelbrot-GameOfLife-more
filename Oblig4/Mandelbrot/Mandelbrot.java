@@ -1,6 +1,8 @@
 package Oblig4.Mandelbrot;
 
 
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 
 /**
@@ -59,11 +61,13 @@ public class Mandelbrot {
     {
         Complex x = new Complex();
         int iterations = 0;
-        for(;iterations<iterationLimit;++iterations){
+        for(;iterations<=iterationLimit;++iterations){
             x = nextIteration(x, C);
             if(x.getLengthSquared()>4.0) break;
         }
-        return new Point(C.getReal(), C.getImaginary(), iterations);
+        Color color = Color.rgb(0,0,iterations*255/iterationLimit);
+        if(iterations==iterationLimit) color = Color.BLACK;
+        return new Point(C.getReal(), C.getImaginary(), color);
     }
 
     private Complex nextIteration(Complex prev, Complex c)
