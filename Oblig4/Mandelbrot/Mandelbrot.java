@@ -32,6 +32,7 @@ public class Mandelbrot {
         this.xTo = xTo;
         this.yFrom = yFrom;
         this.yTo = yTo;
+        constructPoints();
     }
 
     /**
@@ -67,5 +68,10 @@ public class Mandelbrot {
     {
         Complex temp = prev.square();
         return temp.add(c);
+    }
+
+    public ArrayList<Point> getPoints()
+    {
+        return generatedData;
     }
 }
