@@ -27,6 +27,7 @@ public class Mandelbrot {
     }
     public Mandelbrot(double xFrom, double xTo, double yFrom, double yTo)
     {
+        generatedData = new ArrayList<>();
         //magi
         this.xFrom = xFrom;
         this.xTo = xTo;
@@ -48,7 +49,8 @@ public class Mandelbrot {
     {
         for(double x = xFrom;x<=xTo;x+=increment){
             for(double y=yFrom;y<=yTo;y+=increment){
-                calculatePoint(new Complex(x,y));
+                Point p = calculatePoint(new Complex(x,y));
+                generatedData.add(p);
             }
         }
     }
