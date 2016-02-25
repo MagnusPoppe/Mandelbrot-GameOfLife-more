@@ -1,6 +1,6 @@
 package Oblig4.Scale;
 
-import Oblig4.Mandelbrot.Point;
+import Oblig4.Mandelbrot.ColoredPoint;
 
 /**
  * Created by Jo Øivind Gjernes on 25.02.2016.
@@ -47,7 +47,7 @@ public class ConvertCoordinates
 		scalingConstantY = to.getFromY();
 	}
 
-	Point convert(Point in)
+	ColoredPoint convert(ColoredPoint in)
 	{
 		// http://gamedev.stackexchange.com/questions/32555/how-do-i-convert-between-two-different-2d-coordinate-systems
 		// dette SKAL funke helt generelt
@@ -56,6 +56,11 @@ public class ConvertCoordinates
 		in.setX(newX);
 		in.setY(newY);
 		return in;
+	}
+
+	double computeIncrement()
+	{
+		return 1/scalingFactorX;
 	}
 
 

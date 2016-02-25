@@ -1,6 +1,6 @@
 package Oblig4.Scale;
 
-import Oblig4.Mandelbrot.Point;
+import Oblig4.Mandelbrot.ColoredPoint;
 
 import java.util.ArrayList;
 
@@ -18,10 +18,10 @@ public class Scaler
 	 * @param toCoords beskrivelse av koordinatsystemet det skal konverteres til
 	 * @return Oppdatert liste (det er den samme)
 	 */
-	public static ArrayList<Point> scalePoints(ArrayList<Point> toScale, Coords fromCoords, Coords toCoords)
+	public static ArrayList<ColoredPoint> scalePoints(ArrayList<ColoredPoint> toScale, Coords fromCoords, Coords toCoords)
 	{
 		ConvertCoordinates coord = new ConvertCoordinates(fromCoords, toCoords);
-		toScale.forEach((Point p) -> {
+		toScale.forEach((ColoredPoint p) -> {
 			p = coord.convert(p);
 		});
 		return toScale;

@@ -1,6 +1,7 @@
 package Oblig4.Mandelbrot;
 
 
+import Oblig4.Scale.Coords;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -23,20 +24,31 @@ public class Mandelbrot {
 
     // Instansvariabler
     private ArrayList<Point> generatedData;
-    
+
     public Mandelbrot()
     {
         this(0.0-xRangeDefault, xRangeDefault, 0.0-yRangeDefault, yRangeDefault);
     }
     public Mandelbrot(double xFrom, double xTo, double yFrom, double yTo)
     {
+        this(xFrom,xTo,yFrom,yTo, 0.01);
+    }
+
+    public Mandelbrot(double xFrom, double xTo, double yFrom, double yTo, double increment)
+    {
         generatedData = new ArrayList<>();
+        this.increment = increment;
         //magi
         this.xFrom = xFrom;
         this.xTo = xTo;
         this.yFrom = yFrom;
         this.yTo = yTo;
         constructPoints();
+    }
+
+    public Mandelbrot(Coords area, double increment)
+    {
+       this(area.getFromX(), area.getToX(), area.getFromY(), area.getToY(), increment);
     }
 
     /**
