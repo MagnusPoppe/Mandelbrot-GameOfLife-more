@@ -57,11 +57,11 @@ public class Mandelbrot {
         }
     }
 
-    private Point calculatePoint(Complex C)
+    private static Point calculatePoint(Complex C)
     {
         Complex x = new Complex();
         int iterations = 0;
-        for(;iterations<=iterationLimit;++iterations){
+        for(;iterations<iterationLimit;++iterations){
             x = nextIteration(x, C);
             if(x.getLengthSquared()>4.0) break;
         }
@@ -70,7 +70,7 @@ public class Mandelbrot {
         return new Point(C.getReal(), C.getImaginary(), color);
     }
 
-    private Complex nextIteration(Complex prev, Complex c)
+    private static Complex nextIteration(Complex prev, Complex c)
     {
         Complex temp = prev.square();
         return temp.add(c);

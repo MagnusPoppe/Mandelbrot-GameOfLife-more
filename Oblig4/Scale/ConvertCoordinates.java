@@ -34,14 +34,16 @@ public class ConvertCoordinates
 	{
 		scalingFactorX = (from.getToX()-from.getFromX())/(to.getToX()-to.getFromX());
 		scalingFactorY = (from.getToY()-from.getFromY())/(to.getToY()-to.getFromY());
-		scalingConstantX = (to.getToX()-to.getFromX())/2;
-		scalingConstantY = (to.getToY()-to.getFromY())/2;
+		scalingConstantX = to.getFromX();
+		scalingConstantY = to.getFromY();
 	}
 
 	Point convert(Point in)
 	{
-		double newX = in.getX()*scalingFactorX+scalingConstantX;
-		double newY = in.getY()*scalingFactorY+scalingConstantY;
+		// http://gamedev.stackexchange.com/questions/32555/how-do-i-convert-between-two-different-2d-coordinate-systems
+		// dette SKAL funke helt generelt
+		double newX = (in.getX()-from.getFromX())*scalingFactorX+scalingConstantX;
+		double newY = (in.getY()-from.getFromY())*scalingFactorY+scalingConstantY;
 		in.setX(newX);
 		in.setY(newY);
 		return in;
