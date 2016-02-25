@@ -27,7 +27,7 @@ public class Complex {
     {
         double newReal;
         double newImaginary;
-        newReal = this.real*this.real + this.imaginary*this.imaginary;
+        newReal = this.real*this.real - this.imaginary*this.imaginary;
         newImaginary = 2*this.real * this.imaginary;
         return new Complex(newReal, newImaginary);
     }
