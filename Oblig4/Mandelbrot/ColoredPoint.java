@@ -1,5 +1,7 @@
 package Oblig4.Mandelbrot;
 
+import javafx.scene.paint.Color;
+
 /**
  * Kravspec for alle komplekse tall.
  *
@@ -8,4 +10,5 @@ package Oblig4.Mandelbrot;
 public interface ColoredPoint {
     public double getX();
     public double getY();
+    public Color getColor();
 }

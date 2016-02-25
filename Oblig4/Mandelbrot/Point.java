@@ -29,6 +29,12 @@ public class Point implements ColoredPoint {
         return y;
     }
 
+    @Override
+    public Color getColor()
+    {
+        return color;
+    }
+
     public void setX(double x)
     {
         this.x = x;

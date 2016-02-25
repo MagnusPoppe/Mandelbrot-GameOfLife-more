@@ -2,6 +2,7 @@ package Oblig4;/**
  * Created by Magnu on 25.02.2016.
  */
 
+import Oblig4.Mandelbrot.ColoredPoint;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -11,6 +12,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class GUI extends Application
 {
@@ -74,8 +77,7 @@ public class GUI extends Application
             root.setCenter(presenter);
     }
 
-    public static void drawColoredPoints( ArrayList<ColoredPoint>)
+    public static void drawColoredPoints(ArrayList<ColoredPoint> points)
     {
-        
     }
 }
