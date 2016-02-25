@@ -23,6 +23,12 @@ public class ConvertCoordinates
 	private double scalingConstantX;
 	private double scalingConstantY;
 
+
+	/**
+	 * Opprette et konverterinngsobjekt dette kan konvertere et punkt fra et koordinatsystem til et annet (x,y)-planet
+	 * @param from koordinatsystemet man konverterer fra
+	 * @param to koordinatsystemet man konverterer til
+	 */
 	public ConvertCoordinates(Coords from, Coords to)
 	{
 		this.from = from;
@@ -30,6 +36,9 @@ public class ConvertCoordinates
 		computeScalingFactors();
 	}
 
+	/**
+	 * Beregne skalerningsfaktorer (slik at man slipper det ved hver operasjon)
+	 */
 	private void computeScalingFactors()
 	{
 		scalingFactorX = (from.getToX()-from.getFromX())/(to.getToX()-to.getFromX());
