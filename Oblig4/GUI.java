@@ -2,11 +2,18 @@ package Oblig4;/**
  * Created by Magnu on 25.02.2016.
  */
 
+import Oblig4.Eksempel.CustomWritableImage;
 import Oblig4.Mandelbrot.ColoredPoint;
+import Oblig4.Mandelbrot.Mandelbrot;
+import Oblig4.Mandelbrot.Point;
+import Oblig4.Scale.ConvertCoordinates;
+import Oblig4.Scale.Coords;
+import Oblig4.Scale.Scaler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -20,7 +27,7 @@ public class GUI extends Application
     //Globale elementer:
         static BorderPane root;
         final static double STAGEX = 800;
-        final static double STAGEY = 480;
+        final static double STAGEY = 880;
         Ctrl ctrl;
 
     //Grafiske elementer til top-menyen:
@@ -64,6 +71,7 @@ public class GUI extends Application
         //Definerer menyen:
             menu = new HBox(15);
             mandelbrot = new Label("Mandelbrot");
+            mandelbrot.setOnMouseClicked(e->testDraw());
             serpinski = new Label("Serpinski");
             tree = new Label("Tree");
             menu.getChildren().addAll(mandelbrot, serpinski, tree);
@@ -79,5 +87,33 @@ public class GUI extends Application
 
     public static void drawColoredPoints(ArrayList<ColoredPoint> points)
     {
+
+    }
+
+    public static void testDraw()
+    {
+        CustomWritableImage fraktal = new CustomWritableImage(800,800);
+
+        // Koordinatsystem for mandelbroten
+        Coords coords = new Coords(-2.0,2.0,-2,2);
+
+        // For å regne ut inkrement
+        ConvertCoordinates convert = new ConvertCoordinates(coords, fraktal.getCoords());
+
+        // Opprette mandelbrot objekt
+        Mandelbrot mandel = new Mandelbrot(coords, convert.computeIncrement());
+
+        ArrayList<Point> points = mandel.getPoints();
+
+        // Konvertere fra et kordinatsystem til et annet
+        points = Scaler.scalePoints(points,coords, fraktal.getCoords());
+
+        // For å skrive til bilde
+        PixelWriter pixelWriter = fraktal.getPixelWriter();
+
+        for(Point p : points){
+            pixelWriter.setColor((int)p.getX(), (int) p.getY(), p.getColor());
+        }
+        presenter.setImage(fraktal);
     }
 }
