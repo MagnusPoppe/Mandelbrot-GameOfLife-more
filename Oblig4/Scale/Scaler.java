@@ -21,7 +21,6 @@ public class Scaler
 	public static <T extends ColoredPoint> ArrayList<T> scalePoints(ArrayList<T> toScale, Coords fromCoords, Coords toCoords)
 	{
 		ConvertCoordinates coord = new ConvertCoordinates(fromCoords, toCoords);
-		toScale.forEach((T p) -> p = coord.convert(p));
 		return toScale;
 	}
 }

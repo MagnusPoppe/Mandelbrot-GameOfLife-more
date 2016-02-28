@@ -2,7 +2,6 @@ package Oblig4.Mandelbrot;
 
 
 import Oblig4.Scale.Coords;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
@@ -23,7 +22,7 @@ public class Mandelbrot {
     private double yTo;
 
     // Instansvariabler
-    private ArrayList<Point> generatedData;
+    private ArrayList<PointLine> pointLines;
 
     public Mandelbrot()
     {
@@ -36,7 +35,7 @@ public class Mandelbrot {
 
     public Mandelbrot(double xFrom, double xTo, double yFrom, double yTo, double increment)
     {
-        generatedData = new ArrayList<>();
+        pointLines = new ArrayList<>();
         this.increment = increment;
         //magi
         this.xFrom = xFrom;
@@ -62,15 +61,18 @@ public class Mandelbrot {
 
     private void constructPoints()
     {
-        for(double x = xFrom;x<=xTo;x+=increment){
-            for(double y=yFrom;y<=yTo;y+=increment){
-                Point p = calculatePoint(new Complex(x,y));
-                generatedData.add(p);
+        for(double y = yFrom;y<=yTo;y+=increment){
+            PointLine pointLine = new PointLine();
+            for(double x=xFrom;x<=xTo;x+=increment){
+                Point point = new Point(calculatePoint(new Complex(x,y)));
+                pointLine.addPoint(point);
             }
+            //
+            pointLines.add(pointLine);
         }
     }
 
-    private static Point calculatePoint(Complex C)
+    private static int calculatePoint(Complex C)
     {
         Complex x = new Complex(); // 0+0i
 
@@ -80,11 +82,7 @@ public class Mandelbrot {
             if(x.getLengthSquared()>4.0) break;
         }
 
-        // Sett farge
-        Color color = new Color(0,0,(55/155.0)+iterations/(double)(iterationLimit+55), 1.0); //R(0-1.0) G B Alpha=1.0
-        if(iterations==iterationLimit) color = Color.BLACK;
-
-        return new Point(C.getReal(), C.getImaginary(), color);
+        return iterations;
     }
 
     private static Complex nextIteration(Complex prev, Complex c)
@@ -93,8 +91,8 @@ public class Mandelbrot {
         return temp.add(c);
     }
 
-    public ArrayList<Point> getPoints()
+    public ArrayList<PointLine> getPoints()
     {
-        return generatedData;
+        return pointLines;
     }
 }

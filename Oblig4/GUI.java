@@ -5,10 +5,9 @@ package Oblig4;/**
 import Oblig4.Eksempel.CustomWritableImage;
 import Oblig4.Mandelbrot.ColoredPoint;
 import Oblig4.Mandelbrot.Mandelbrot;
-import Oblig4.Mandelbrot.Point;
+import Oblig4.Mandelbrot.PointLine;
 import Oblig4.Scale.ConvertCoordinates;
 import Oblig4.Scale.Coords;
-import Oblig4.Scale.Scaler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -103,17 +102,16 @@ public class GUI extends Application
         // Opprette mandelbrot objekt
         Mandelbrot mandel = new Mandelbrot(coords, convert.computeIncrement());
 
-        ArrayList<Point> points = mandel.getPoints();
-
-        // Konvertere fra et kordinatsystem til et annet
-        points = Scaler.scalePoints(points,coords, fraktal.getCoords());
-
+        ArrayList<PointLine> line = mandel.getPoints();
         // For å skrive til bilde
         PixelWriter pixelWriter = fraktal.getPixelWriter();
-
-        for(Point p : points){
-            pixelWriter.setColor((int)p.getX(), (int) p.getY(), p.getColor());
-        }
+            for(int y = 0;y<800;++y){
+                    // En linje for hver y koordinat (langsgående.
+                    PointLine current = line.get(y);
+                    for(int x=0;x<800;++x){
+                            pixelWriter.setColor(x,y,current.getPoint(x).getColor());
+                    }
+            }
         presenter.setImage(fraktal);
     }
 }
