@@ -94,13 +94,13 @@ public class GUI extends Application
         CustomWritableImage fraktal = new CustomWritableImage(800,800);
 
         // Koordinatsystem for mandelbroten
-        Coords coords = new Coords(-2.0,2.0,-2,2);
+        Coords coords = new Coords(-2.0,0.5,-1.25,1.25);
 
         // For å regne ut inkrement
         ConvertCoordinates convert = new ConvertCoordinates(coords, fraktal.getCoords());
 
         // Opprette mandelbrot objekt
-        Mandelbrot mandel = new Mandelbrot(coords, convert.computeIncrement());
+        Mandelbrot mandel = new Mandelbrot(coords, convert.computeXIncrement(),convert.computeYIncrement());
 
         ArrayList<PointLine> line = mandel.getPoints();
         // For å skrive til bilde

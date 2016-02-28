@@ -45,9 +45,14 @@ public class ConvertCoordinates
 		scalingConstantY = to.getFromY();
 	}
 
-	public double computeIncrement()
+	public double computeXIncrement()
 	{
 		return 1.0/scalingFactorX;
+	}
+
+	public double computeYIncrement()
+	{
+		return 1.0/scalingFactorY;
 	}
 
 

@@ -14,7 +14,8 @@ public class Mandelbrot {
     private static final double xRangeDefault = 2.0;
     private static final double yRangeDefault = 2.0;
     private static int iterationLimit = 100;
-    private double increment = 0.01; // OBS: Må matche med oppløsning på det endelige bildet!
+    private double xIncrement = 0.01; // OBS: Må matche med oppløsning på det endelige bildet!
+    private double yIncrement = 0.01; // ------------------------ "" ------------------------
 
     private double xFrom;
     private double xTo;
@@ -30,14 +31,15 @@ public class Mandelbrot {
     }
     public Mandelbrot(double xFrom, double xTo, double yFrom, double yTo)
     {
-        this(xFrom,xTo,yFrom,yTo, 0.01);
+        this(xFrom,xTo,yFrom,yTo, 0.01, 0.01);
     }
 
-    public Mandelbrot(double xFrom, double xTo, double yFrom, double yTo, double increment)
+    public Mandelbrot(double xFrom, double xTo, double yFrom, double yTo, double xIncrement, double yIncrement)
     {
         pointLines = new ArrayList<>();
-        this.increment = increment;
-        //magi
+        this.xIncrement = xIncrement;
+        this.yIncrement = yIncrement;
+
         this.xFrom = xFrom;
         this.xTo = xTo;
         this.yFrom = yFrom;
@@ -45,25 +47,25 @@ public class Mandelbrot {
         constructPoints();
     }
 
-    public Mandelbrot(Coords area, double increment)
+    public Mandelbrot(Coords area, double xIncrement, double yIncrement)
     {
-       this(area.getFromX(), area.getToX(), area.getFromY(), area.getToY(), increment);
+       this(area.getFromX(), area.getToX(), area.getFromY(), area.getToY(), xIncrement, yIncrement);
     }
 
     /**
      * Funksjon for å sette inkremeneter
-     * @param increment inkrement for punkter man går over
+     * @param xIncrement inkrement for punkter man går over
      */
-    public void setIncrement(double increment)
+    public void setxIncrement(double xIncrement)
     {
-        this.increment = increment;
+        this.xIncrement = xIncrement;
     }
 
     private void constructPoints()
     {
-        for(double y = yFrom;y<=yTo;y+=increment){
+        for(double y = yFrom;y<=yTo;y+= yIncrement){
             PointLine pointLine = new PointLine();
-            for(double x=xFrom;x<=xTo;x+=increment){
+            for(double x=xFrom;x<=xTo;x+= xIncrement){
                 Point point = new Point(calculatePoint(new Complex(x,y)));
                 pointLine.addPoint(point);
             }

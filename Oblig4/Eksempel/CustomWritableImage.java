@@ -15,7 +15,7 @@ import javafx.scene.image.WritableImage;
  * CustomWritableImage test = new CustomWritableImage(800,800);
  * Coords coords = new Coords(-1.0,1.0,-1.0,1.0);
  * ConvertCoordinates conv = new ConvertCoordinates(coords, test.getCoords());
- * Mandelbrot mandel = new Mandelbrot(coords, conv.computeIncrement());
+ * Mandelbrot mandel = new Mandelbrot(coords, conv.computeXIncrement());
  *
  */
 public class CustomWritableImage extends WritableImage
