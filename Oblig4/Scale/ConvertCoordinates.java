@@ -3,13 +3,13 @@ package Oblig4.Scale;
 /**
  * Created by Jo Øivind Gjernes on 25.02.2016.
  *
- * Klasse for å konvertere fra ett koordinatsystem til et annnet
+ * Klasse for å konvertere fra ett koordinatsystem til et annet
  *
  *
  * BESKRIVELSE:
- * Man initialiserer det med hvilket koordinat system man skal konvertere fra
- * og hvilket man skal konvertere til.
- * så kan man putte inn et koordinat og få tilsvarende koordinat ut i det andre systemet.
+ * Man initialiserer det med hvilket koordinatsystem man skal konvertere fra
+ * og hvilket man skal konvertere til. Så kan man putte inn et koordinat og
+ * få tilsvarende koordinat ut i det andre systemet.
  */
 public class ConvertCoordinates
 {
@@ -23,7 +23,8 @@ public class ConvertCoordinates
 
 
 	/**
-	 * Opprette et konverterinngsobjekt dette kan konvertere et punkt fra et koordinatsystem til et annet (x,y)-planet
+	 * Opprette et konverterinngsobjekt dette kan konvertere et punkt fra et
+	 * koordinatsystem til et annet (x,y)-planet.
 	 * @param from koordinatsystemet man konverterer fra
 	 * @param to koordinatsystemet man konverterer til
 	 */

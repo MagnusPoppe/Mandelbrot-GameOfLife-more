@@ -23,7 +23,7 @@ public class Mandelbrot {
     private double yTo;
 
     // Instansvariabler
-    private ArrayList<PointLine> pointLines;
+    private ArrayList<PointLine> pointLines; //Skjønner ikke helt hvordan denne er implementert.. -Magnus
 
     public Mandelbrot()
     {
