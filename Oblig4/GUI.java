@@ -2,11 +2,18 @@ package Oblig4;/**
  * Created by Magnu on 25.02.2016.
  */
 
+import Oblig4.Eksempel.CustomWritableImage;
 import Oblig4.Mandelbrot.ColoredPoint;
+import Oblig4.Mandelbrot.Mandelbrot;
+import Oblig4.Mandelbrot.Point;
+import Oblig4.Scale.ConvertCoordinates;
+import Oblig4.Scale.Coords;
+import Oblig4.Scale.Scaler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -79,5 +86,17 @@ public class GUI extends Application
 
     public static void drawColoredPoints(ArrayList<ColoredPoint> points)
     {
+        CustomWritableImage img = new CustomWritableImage(800,800);
+        Coords coords = new Coords(-2.0,2.0,-2.0,2.0);
+        ConvertCoordinates conv = new ConvertCoordinates(coords, img.getCoords());
+        Mandelbrot mandel = new Mandelbrot(coords, conv.computeIncrement());
+        ArrayList<Point> p = mandel.getPoints();
+        p = Scaler.scalePoints(p, coords, img.getCoords());
+        PixelWriter pixelWriter = img.getPixelWriter();
+
+        for(Point pt : p){
+            pixelWriter.setColor((int)pt.getX(),(int)pt.getY(),pt.getColor());
+        }
+        presenter.setImage(img);
     }
 }
