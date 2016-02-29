@@ -15,8 +15,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -30,10 +32,11 @@ public class GUI extends Application
         Ctrl ctrl;
 
     //Grafiske elementer til top-menyen:
-        static HBox menu;
-        static Label mandelbrot, serpinski, tree;
-        final static Color NOTSELECTED = Color.BLACK;
+        static GridPane menu;
+        static Label mandelbrot, bifurcation, cellulærAutomat, conway;
+        final static Color NOTSELECTED = Color.DARKGRAY;
         final static Color SELECTED = Color.SKYBLUE;
+        final static Font menufont = new Font("Roboto, Helvetica, Arial", 18);
 
     //Grafiske elementer til tegneområdet:
         static ImageView presenter;
@@ -59,6 +62,10 @@ public class GUI extends Application
 
         //Lyttefunksjoner:
 
+            mandelbrot.setOnMouseClicked(e-> {
+                testDraw();
+                select(mandelbrot);
+            });
     }
 
     /**
@@ -68,12 +75,7 @@ public class GUI extends Application
     public static void build()
     {
         //Definerer menyen:
-            menu = new HBox(15);
-            mandelbrot = new Label("Mandelbrot");
-            mandelbrot.setOnMouseClicked(e->testDraw());
-            serpinski = new Label("Serpinski");
-            tree = new Label("Tree");
-            menu.getChildren().addAll(mandelbrot, serpinski, tree);
+            createMenu();
 
         //Definerer visningsområdet
             presenter = new ImageView();
@@ -82,6 +84,53 @@ public class GUI extends Application
             root = new BorderPane();
             root.setTop(menu);
             root.setCenter(presenter);
+    }
+
+    /**
+     * Lager elementer til menyen og setter stil på dem.
+     */
+    public static void createMenu() {
+        //Creating menu elements:
+            mandelbrot = new Label("Mandelbrot");
+            bifurcation = new Label("Bifurcation");
+            cellulærAutomat = new Label("Cellulær automat");
+            conway = new Label("Conway's \"game of life\"");
+
+        //Styling:
+            mandelbrot.setTextFill(NOTSELECTED);
+            mandelbrot.setFont(menufont);
+            bifurcation.setTextFill(NOTSELECTED);
+            bifurcation.setFont(menufont);
+            cellulærAutomat.setTextFill(NOTSELECTED);
+            cellulærAutomat.setFont(menufont);
+            conway.setTextFill(NOTSELECTED);
+            conway.setFont(menufont);
+
+        //Adding to grid:
+            menu = new GridPane();
+            menu.addRow(0, mandelbrot, bifurcation, cellulærAutomat, conway);
+            ColumnConstraints cc = new ColumnConstraints();
+            cc.setPercentWidth(25);
+            menu.getColumnConstraints().addAll(cc, cc, cc, cc);
+
+    }
+
+    /**
+     * Setter valgt fargen på en gitt label.
+     * @param lbl
+     */
+    public static void select(Label lbl) {
+        lbl.setTextFill(SELECTED);
+    }
+
+    /**
+     * Fjerner "valgt" fargen for alle labels.
+     */
+    public static void deSelect() {
+        mandelbrot.setTextFill(NOTSELECTED);
+        bifurcation.setTextFill(NOTSELECTED);
+        cellulærAutomat.setTextFill(NOTSELECTED);
+        conway.setTextFill(NOTSELECTED);
     }
 
     public static void drawColoredPoints(ArrayList<ColoredPoint> points)
@@ -94,7 +143,7 @@ public class GUI extends Application
         CustomWritableImage fraktal = new CustomWritableImage(800,800);
 
         // Koordinatsystem for mandelbroten
-        Coords coords = new Coords(-2.0,0.5,-1.25,1.25);
+        Coords coords = new Coords(-2.0,0.5,-1.25,1.25); //Hvor kommer disse tallene fra? - Magnus
 
         // For å regne ut inkrement
         ConvertCoordinates convert = new ConvertCoordinates(coords, fraktal.getCoords());
@@ -103,6 +152,7 @@ public class GUI extends Application
         Mandelbrot mandel = new Mandelbrot(coords, convert.computeXIncrement(),convert.computeYIncrement());
 
         ArrayList<PointLine> line = mandel.getPoints();
+
         // For å skrive til bilde
         PixelWriter pixelWriter = fraktal.getPixelWriter();
             for(int y = 0;y<800;++y){
