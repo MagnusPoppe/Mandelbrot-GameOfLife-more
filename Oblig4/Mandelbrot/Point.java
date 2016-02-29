@@ -10,38 +10,22 @@ import javafx.scene.paint.Color;
  * Created by jooivind on 25.02.2016.
  */
 public class Point extends ColoredPoint {
-    double x,y;
-    private Color color;
-    public Point(double x, double y, Color color)
-    {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-    }
+	private Color color;
 
-    @Override
-    public double getX() {
-        return x;
-    }
+	public Point(Color color)
+	{
+		this.color = color;
+	}
 
-    @Override
-    public double getY() {
-        return y;
-    }
+	public Point(int iterations)
+	{
+		if(iterations == 100) iterations = 10;
+		else iterations += 50;
+		color = Color.rgb(10,10,iterations);
+	}
 
-    @Override
-    public Color getColor()
-    {
-        return color;
-    }
-
-    public void setX(double x)
-    {
-        this.x = x;
-    }
-
-    public void setY(double y)
-    {
-        this.y = y;
-    }
+	public Color getColor()
+	{
+		return color;
+	}
 }

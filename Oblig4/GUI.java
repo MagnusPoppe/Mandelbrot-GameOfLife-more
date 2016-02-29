@@ -5,10 +5,9 @@ package Oblig4;/**
 import Oblig4.Eksempel.CustomWritableImage;
 import Oblig4.Mandelbrot.ColoredPoint;
 import Oblig4.Mandelbrot.Mandelbrot;
-import Oblig4.Mandelbrot.Point;
+import Oblig4.Mandelbrot.PointLine;
 import Oblig4.Scale.ConvertCoordinates;
 import Oblig4.Scale.Coords;
-import Oblig4.Scale.Scaler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -27,7 +26,7 @@ public class GUI extends Application
     //Globale elementer:
         static BorderPane root;
         final static double STAGEX = 800;
-        final static double STAGEY = 480;
+        final static double STAGEY = 880;
         Ctrl ctrl;
 
     //Grafiske elementer til top-menyen:
@@ -71,6 +70,7 @@ public class GUI extends Application
         //Definerer menyen:
             menu = new HBox(15);
             mandelbrot = new Label("Mandelbrot");
+            mandelbrot.setOnMouseClicked(e->testDraw());
             serpinski = new Label("Serpinski");
             tree = new Label("Tree");
             menu.getChildren().addAll(mandelbrot, serpinski, tree);
@@ -86,17 +86,32 @@ public class GUI extends Application
 
     public static void drawColoredPoints(ArrayList<ColoredPoint> points)
     {
-        CustomWritableImage img = new CustomWritableImage(800,800);
-        Coords coords = new Coords(-2.0,2.0,-2.0,2.0);
-        ConvertCoordinates conv = new ConvertCoordinates(coords, img.getCoords());
-        Mandelbrot mandel = new Mandelbrot(coords, conv.computeIncrement());
-        ArrayList<Point> p = mandel.getPoints();
-        p = Scaler.scalePoints(p, coords, img.getCoords());
-        PixelWriter pixelWriter = img.getPixelWriter();
 
-        for(Point pt : p){
-            pixelWriter.setColor((int)pt.getX(),(int)pt.getY(),pt.getColor());
-        }
-        presenter.setImage(img);
+    }
+
+    public static void testDraw()
+    {
+        CustomWritableImage fraktal = new CustomWritableImage(800,800);
+
+        // Koordinatsystem for mandelbroten
+        Coords coords = new Coords(-2.0,0.5,-1.25,1.25);
+
+        // For å regne ut inkrement
+        ConvertCoordinates convert = new ConvertCoordinates(coords, fraktal.getCoords());
+
+        // Opprette mandelbrot objekt
+        Mandelbrot mandel = new Mandelbrot(coords, convert.computeXIncrement(),convert.computeYIncrement());
+
+        ArrayList<PointLine> line = mandel.getPoints();
+        // For å skrive til bilde
+        PixelWriter pixelWriter = fraktal.getPixelWriter();
+            for(int y = 0;y<800;++y){
+                    // En linje for hver y koordinat (langsgående.
+                    PointLine current = line.get(y);
+                    for(int x=0;x<800;++x){
+                            pixelWriter.setColor(x,y,current.getPoint(x).getColor());
+                    }
+            }
+        presenter.setImage(fraktal);
     }
 }
