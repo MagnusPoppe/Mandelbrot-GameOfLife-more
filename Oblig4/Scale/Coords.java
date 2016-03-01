@@ -55,4 +55,14 @@ public class Coords {
     {
         return toY;
     }
+
+    @Override
+    public String toString() {
+        return "Coords{" +
+                "fromX=" + fromX +
+                ", toX=" + toX +
+                ", fromY=" + fromY +
+                ", toY=" + toY +
+                '}';
+    }
 }

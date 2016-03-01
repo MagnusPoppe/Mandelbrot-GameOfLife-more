@@ -30,6 +30,8 @@ public class GUI extends Application
         final static double STAGEX = 800;
         final static double STAGEY = 880;
         Ctrl ctrl;
+        private static Mandelbrot mandel;
+        private static Coords coords;
 
     //Grafiske elementer til top-menyen:
         static GridPane menu;
@@ -66,8 +68,10 @@ public class GUI extends Application
 
         //Lyttefunksjoner:
 
+            coords = new Coords(-2.0, 2.0, -2.0, 2.0);
+
             mandelbrot.setOnMouseClicked(e-> {
-                testDraw();
+                zoom(new Coords(0, 800, 0, 800));
                 select(mandelbrot);
             });
 
@@ -102,7 +106,7 @@ public class GUI extends Application
                     double toY = e3.getY();
                     markings.getChildren().clear();
 
-                    Coords newFrame = new Coords(fromX, fromY, toX, toY);
+                    Coords newFrame = new Coords(fromX, toX, fromY, toY);
                     zoom(newFrame);
                 });
             });
@@ -122,26 +126,27 @@ public class GUI extends Application
         // Koordinatsystem for mandelbroten
 
             //DATA MANGELER! HER MÅ DET KONVERTERES OVER FRA BILDEKOORDINATER TIL MANDELBROT
-            Coords coords = new Coords(-2.0,2,-2,2);
+            //Coords coords = new Coords(-2.0,2,-2,2);
 
         // For å regne ut inkrement
+        coords = newZoomCoords(coords, frame, img.getCoords());
+        System.out.println((coords.getToX() - coords.getFromX()));
         ConvertCoordinates convert = new ConvertCoordinates(
 
-                frame,
-                coords
+                coords, img.getCoords()
                 //Istedenfor "img.getCoords()"
 
-        );
 
+        );
+        //System.out.println(newZoomCoords(coords, frame, img.getCoords()));
         // Opprette mandelbrot objekt
-        Mandelbrot mandel = new Mandelbrot(
+        mandel = new Mandelbrot(
                 coords,
                 convert.computeXIncrement(),
                 convert.computeYIncrement()
         );
 
         ArrayList<PointLine> line = mandel.getPoints();
-
         // For å skrive til bilde
         PixelWriter pixelWriter = img.getPixelWriter();
         for(int y = 0;y<800;++y){
@@ -152,6 +157,24 @@ public class GUI extends Application
             }
         }
         presenter.setImage(img);
+    }
+    private Coords newZoomCoords(Coords old, Coords zoom, Coords window) {
+        //double newX = window.toX()
+        double windowWidth = window.getToX() - window.getFromX();
+        double windowHeight = window.getToY() - window.getFromY();
+        double relativeStartX = zoom.getFromX() / windowWidth;
+        double relativeEndX = zoom.getToX() / windowWidth;
+        double relativeStartY = zoom.getFromY() / windowHeight;
+        double relativeEndY = zoom.getToY() / windowHeight;
+        double oldRelativeStartX = 0;
+        double oldRelativeEndX = old.getToX() - old.getFromX();
+        double oldRelativeStartY = 0;
+        double oldRelativeEndY = old.getToY() - old.getFromY();
+        double newStartX = relativeStartX * (old.getToX() - old.getFromX()) + old.getFromX();
+        double newEndX = relativeEndX * (old.getToX() - old.getFromX()) + old.getFromX();
+        double newStartY = relativeStartY * (old.getToY() - old.getFromY()) + old.getFromY();
+        double newEndY = relativeEndY * (old.getToY() - old.getFromY()) + old.getFromY();
+        return new Coords(newStartX, newEndX, newStartY, newEndY);
     }
 
     /**
@@ -238,7 +261,7 @@ public class GUI extends Application
 
         // Koordinatsystem for mandelbroten
         //Coords coords = new Coords(-2.0,0.5,-1.25,1.25); //Hvor kommer disse tallene fra? - Magnus
-        Coords coords = new Coords(-2.0,2,-2,2);
+        //Coords coords = new Coords(-2.0,2,-2,2);
         // For å regne ut inkrement
         ConvertCoordinates convert = new ConvertCoordinates(
                 coords,
@@ -246,11 +269,12 @@ public class GUI extends Application
         );
 
         // Opprette mandelbrot objekt
-        Mandelbrot mandel = new Mandelbrot(
+        mandel = new Mandelbrot(
                 coords,
                 convert.computeXIncrement(),
                 convert.computeYIncrement()
         );
+        //mandel = new Mandelbrot(-1, 1, -1, 1, 0.002, 0.002);
 
         ArrayList<PointLine> line = mandel.getPoints();
 

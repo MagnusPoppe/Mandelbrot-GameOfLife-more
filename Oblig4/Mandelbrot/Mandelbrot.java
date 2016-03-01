@@ -14,8 +14,8 @@ public class Mandelbrot {
     private static final double xRangeDefault = 2.0;
     private static final double yRangeDefault = 2.0;
     private static int iterationLimit = 100;
-    private double xIncrement = 0.01; // OBS: Må matche med oppløsning på det endelige bildet!
-    private double yIncrement = 0.01; // ------------------------ "" ------------------------
+    private double xIncrement = 0.001; // OBS: Må matche med oppløsning på det endelige bildet!
+    private double yIncrement = 0.001; // ------------------------ "" ------------------------
 
     private double xFrom;
     private double xTo;
@@ -96,5 +96,9 @@ public class Mandelbrot {
     public ArrayList<PointLine> getPoints()
     {
         return pointLines;
+    }
+
+    public Coords getCoords() {
+        return new Coords(xFrom, xTo, yFrom, yTo);
     }
 }
