@@ -113,16 +113,14 @@ public class GUI extends Application
     }
 
     /**
-     * Genererer nytt bilde basert på en ramme.
-     *
-     * TODO: 
+     * Genererer nytt bilde basert på en "coords" ramme.
      *
      * @param frame
      */
     public void zoom(Coords frame)
     {
         //Fikser på koordinatene mottat fra brukerinndata:
-        //TODO: frame = correctUserInput(frame);
+        frame = correctUserInput(frame);
         frame = correctAspectRatio(frame);
 
         CustomWritableImage img = new CustomWritableImage(800, 800);
@@ -158,6 +156,34 @@ public class GUI extends Application
     }
 
     /**
+     * Tillater brukeren å dra fra og til alle mulige retninger.
+     * litt lang kode p.g.a. manglende setmetoder (gadd ikke å generere...) :D
+     * @param c
+     * @return
+     */
+    public Coords correctUserInput(Coords c)
+    {
+        double fromX, toX, fromY, toY;
+        if (c.getToX() < c.getFromX()) {
+            fromX = c.getToX();
+            toX = c.getFromX();
+        }
+        else {
+            fromX = c.getFromX();
+            toX = c.getToX();
+        }
+        if (c.getToY() < c.getFromY()) {
+            fromY = c.getToY();
+            toY = c.getFromY();
+        }
+        else {
+            fromY = c.getFromY();
+            toY = c.getToY();
+        }
+        return new Coords(fromX, toX, fromY, toY);
+    }
+
+    /**
      * Fikser på skjermformatet når bruker zoomer så
      * det ikke blir strukket bilde. JEG SKAL IKKE HA NOE
      * STRUKKET BILDE !!!
@@ -167,11 +193,11 @@ public class GUI extends Application
     private Coords correctAspectRatio(Coords c)
     {
         //Hvis Y er størst:
-        if ((c.getToX() - c.getFromX()) > (c.getToY() - c.getFromY())) {
+        if ((c.getToX() - c.getFromX()) < (c.getToY() - c.getFromY())) {
             double centerX = ((c.getToX() - c.getFromX()) / 2);
             double centerY = ((c.getToY() - c.getFromY()) / 2);
             return new Coords(
-                (c.getFromX() + centerX ) - centerY,
+                (c.getFromX() + centerX) - centerY,
                 (c.getFromX() + centerX) + centerY,
                 c.getFromY(),
                 c.getToY()
@@ -184,7 +210,7 @@ public class GUI extends Application
             return new Coords(
                 c.getFromX(),
                 c.getToX(),
-                (c.getFromY() + centerY ) - centerX,
+                (c.getFromY() + centerY) - centerX,
                 (c.getFromY() + centerY) + centerX
             );
         }
