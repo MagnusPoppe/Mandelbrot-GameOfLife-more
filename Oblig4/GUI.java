@@ -76,17 +76,28 @@ public class GUI extends Application
             stack.setOnMousePressed( e1 -> {
                 double fromX = e1.getX();
                 double fromY = e1.getY();
+                Line x1 = new Line(fromX, fromY, fromX, fromY);
+                Line x2 = new Line(fromX, fromY, fromX, fromY);
+                Line y1 = new Line(fromX, fromY, fromX, fromY);
+                Line y2 = new Line(fromX, fromY, fromX, fromY);
+                markings.getChildren().addAll(x1, x2, y1, y2);
                 stack.setOnMouseDragged( e2 -> {
-                    Line x1 = new Line(fromX, fromY, e2.getX(), fromY);
-                    Line x2 = new Line(fromX, e2.getY(), e2.getX(), e2.getY());
-                    Line y1 = new Line(fromX, fromY, fromX, e2.getY());
-                    Line y2 = new Line(e2.getX(), fromY, e2.getX(), e2.getY());
-                    markings.getChildren().addAll(x1, x2, y1, y2);
-                    pane.getChildren().add(markings);
+                    x1.setEndX(e2.getX());
+
+                    x2.setStartY(e2.getY());
+                    x2.setEndX(e2.getX());
+                    x2.setEndY(e2.getY());
+
+                    y1.setEndY(e2.getY());
+
+                    y2.setStartX(e2.getX());
+                    y2.setEndX(e2.getX());
+                    y2.setEndY(e2.getY());
                 });
                 stack.setOnMouseReleased( e3 -> {
                     double toX = e3.getX();
                     double toY = e3.getY();
+                    pane.getChildren().add(markings);
                 });
             });
     }
