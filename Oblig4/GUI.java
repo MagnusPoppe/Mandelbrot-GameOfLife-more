@@ -9,19 +9,21 @@ import Oblig4.Mandelbrot.PointLine;
 import Oblig4.Scale.ConvertCoordinates;
 import Oblig4.Scale.Coords;
 import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class GUI extends Application
 {
@@ -39,8 +41,12 @@ public class GUI extends Application
         final static Font menufont = new Font("Roboto, Helvetica, Arial", 18);
 
     //Grafiske elementer til tegneområdet:
+        static StackPane stack;
+        static Group markings;
+        static Pane pane;
         static ImageView presenter;
         static WritableImage graph;
+
 
     public static void main(String[] args)
     {
@@ -66,6 +72,23 @@ public class GUI extends Application
                 testDraw();
                 select(mandelbrot);
             });
+
+            stack.setOnMousePressed( e1 -> {
+                double fromX = e1.getX();
+                double fromY = e1.getY();
+                stack.setOnMouseDragged( e2 -> {
+                    Line x1 = new Line(fromX, fromY, e2.getX(), fromY);
+                    Line x2 = new Line(fromX, e2.getY(), e2.getX(), e2.getY());
+                    Line y1 = new Line(fromX, fromY, fromX, e2.getY());
+                    Line y2 = new Line(e2.getX(), fromY, e2.getX(), e2.getY());
+                    markings.getChildren().addAll(x1, x2, y1, y2);
+                    pane.getChildren().add(markings);
+                });
+                stack.setOnMouseReleased( e3 -> {
+                    double toX = e3.getX();
+                    double toY = e3.getY();
+                });
+            });
     }
 
     /**
@@ -78,12 +101,15 @@ public class GUI extends Application
             createMenu();
 
         //Definerer visningsområdet
+            stack = new StackPane();
+            markings = new Group();
+            pane = new Pane();
             presenter = new ImageView();
-
+            stack.getChildren().addAll(presenter, pane);
         //Setter opp vinduet:
             root = new BorderPane();
             root.setTop(menu);
-            root.setCenter(presenter);
+            root.setCenter(stack);
     }
 
     /**
@@ -99,12 +125,16 @@ public class GUI extends Application
         //Styling:
             mandelbrot.setTextFill(NOTSELECTED);
             mandelbrot.setFont(menufont);
+            mandelbrot.setAlignment(Pos.CENTER);
             bifurcation.setTextFill(NOTSELECTED);
             bifurcation.setFont(menufont);
+            bifurcation.setAlignment(Pos.CENTER);
             cellulærAutomat.setTextFill(NOTSELECTED);
             cellulærAutomat.setFont(menufont);
+            cellulærAutomat.setAlignment(Pos.CENTER);
             conway.setTextFill(NOTSELECTED);
             conway.setFont(menufont);
+            conway.setAlignment(Pos.CENTER);
 
         //Adding to grid:
             menu = new GridPane();
@@ -133,23 +163,25 @@ public class GUI extends Application
         conway.setTextFill(NOTSELECTED);
     }
 
-    public static void drawColoredPoints(ArrayList<ColoredPoint> points)
-    {
-
-    }
-
     public static void testDraw()
     {
         CustomWritableImage fraktal = new CustomWritableImage(800,800);
 
         // Koordinatsystem for mandelbroten
-        Coords coords = new Coords(-2.0,0.5,-1.25,1.25); //Hvor kommer disse tallene fra? - Magnus
-
+        //Coords coords = new Coords(-2.0,0.5,-1.25,1.25); //Hvor kommer disse tallene fra? - Magnus
+        Coords coords = new Coords(-2.0,2,-2,2);
         // For å regne ut inkrement
-        ConvertCoordinates convert = new ConvertCoordinates(coords, fraktal.getCoords());
+        ConvertCoordinates convert = new ConvertCoordinates(
+                coords,
+                fraktal.getCoords()
+        );
 
         // Opprette mandelbrot objekt
-        Mandelbrot mandel = new Mandelbrot(coords, convert.computeXIncrement(),convert.computeYIncrement());
+        Mandelbrot mandel = new Mandelbrot(
+                coords,
+                convert.computeXIncrement(),
+                convert.computeYIncrement()
+        );
 
         ArrayList<PointLine> line = mandel.getPoints();
 
