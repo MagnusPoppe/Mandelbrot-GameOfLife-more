@@ -235,7 +235,8 @@ public class GUI extends Application
     /**
      * Fjerner "valgt" fargen for alle labels.
      */
-    public static void deSelect() {
+    public static void deSelect()
+    {
         mandelbrot.setTextFill(NOTSELECTED);
         bifurcation.setTextFill(NOTSELECTED);
         cellulærAutomat.setTextFill(NOTSELECTED);
