@@ -121,24 +121,22 @@ public class GUI extends Application
      */
     public void zoom(Coords frame)
     {
+        //Fikser på koordinatene mottat fra brukerinndata:
+        //TODO: frame = correctUserInput(frame);
+        frame = correctAspectRatio(frame);
 
         CustomWritableImage img = new CustomWritableImage(800, 800);
-        // Koordinatsystem for mandelbroten
 
-            //DATA MANGELER! HER MÅ DET KONVERTERES OVER FRA BILDEKOORDINATER TIL MANDELBROT
-            //Coords coords = new Coords(-2.0,2,-2,2);
+        // Koordinatsystem for mandelbroten
+        coords = Mandelbrot.newZoomCoords(coords, frame, img.getCoords());
 
         // For å regne ut inkrement
-        coords = newZoomCoords(coords, frame, img.getCoords());
         System.out.println((coords.getToX() - coords.getFromX()));
+
         ConvertCoordinates convert = new ConvertCoordinates(
-
                 coords, img.getCoords()
-                //Istedenfor "img.getCoords()"
-
-
         );
-        //System.out.println(newZoomCoords(coords, frame, img.getCoords()));
+
         // Opprette mandelbrot objekt
         mandel = new Mandelbrot(
                 coords,
@@ -146,8 +144,8 @@ public class GUI extends Application
                 convert.computeYIncrement()
         );
 
-        ArrayList<PointLine> line = mandel.getPoints();
         // For å skrive til bilde
+        ArrayList<PointLine> line = mandel.getPoints();
         PixelWriter pixelWriter = img.getPixelWriter();
         for(int y = 0;y<800;++y){
             // En linje for hver y koordinat (langsgående.
@@ -158,81 +156,38 @@ public class GUI extends Application
         }
         presenter.setImage(img);
     }
-    private Coords newZoomCoords(Coords old, Coords zoom, Coords window) {
-        //double newX = window.toX()
-        double windowWidth = window.getToX() - window.getFromX();
-        double windowHeight = window.getToY() - window.getFromY();
-        double relativeStartX = zoom.getFromX() / windowWidth;
-        double relativeEndX = zoom.getToX() / windowWidth;
-        double relativeStartY = zoom.getFromY() / windowHeight;
-        double relativeEndY = zoom.getToY() / windowHeight;
-        double oldRelativeStartX = 0;
-        double oldRelativeEndX = old.getToX() - old.getFromX();
-        double oldRelativeStartY = 0;
-        double oldRelativeEndY = old.getToY() - old.getFromY();
-        double newStartX = relativeStartX * (old.getToX() - old.getFromX()) + old.getFromX();
-        double newEndX = relativeEndX * (old.getToX() - old.getFromX()) + old.getFromX();
-        double newStartY = relativeStartY * (old.getToY() - old.getFromY()) + old.getFromY();
-        double newEndY = relativeEndY * (old.getToY() - old.getFromY()) + old.getFromY();
-        return new Coords(newStartX, newEndX, newStartY, newEndY);
-    }
 
     /**
-     * Brukes til å bygge alle elementene som går inn i GUI.
-     * Metoden er kun til for å slippe rot i startmetoden.
+     * Fikser på skjermformatet når bruker zoomer så
+     * det ikke blir strukket bilde. JEG SKAL IKKE HA NOE
+     * STRUKKET BILDE !!!
+     * @param c
+     * @return Perfect coordinates for zooming.
      */
-    public static void build()
+    private Coords correctAspectRatio(Coords c)
     {
-        //Definerer menyen:
-            createMenu();
-
-        //Definerer visningsområdet
-            stack = new StackPane();
-            markings = new Group();
-            pane = new Pane();
-            presenter = new ImageView();
-            stack.getChildren().addAll(presenter, pane);
-            pane.getChildren().add(markings);
-
-        //Setter opp vinduet:
-            root = new BorderPane();
-            root.setTop(menu);
-            root.setCenter(stack);
-            started = false;
-    }
-
-    /**
-     * Lager elementer til menyen og setter stil på dem.
-     */
-    public static void createMenu()
-    {
-        //Creating menu elements:
-            mandelbrot = new Label("Mandelbrot");
-            bifurcation = new Label("Bifurcation");
-            cellulærAutomat = new Label("Cellulær automat");
-            conway = new Label("Conway's \"game of life\"");
-
-        //Styling:
-            mandelbrot.setTextFill(NOTSELECTED);
-            mandelbrot.setFont(menufont);
-            mandelbrot.setAlignment(Pos.CENTER);
-            bifurcation.setTextFill(NOTSELECTED);
-            bifurcation.setFont(menufont);
-            bifurcation.setAlignment(Pos.CENTER);
-            cellulærAutomat.setTextFill(NOTSELECTED);
-            cellulærAutomat.setFont(menufont);
-            cellulærAutomat.setAlignment(Pos.CENTER);
-            conway.setTextFill(NOTSELECTED);
-            conway.setFont(menufont);
-            conway.setAlignment(Pos.CENTER);
-
-        //Adding to grid:
-            menu = new GridPane();
-            menu.addRow(0, mandelbrot, bifurcation, cellulærAutomat, conway);
-            ColumnConstraints cc = new ColumnConstraints();
-            cc.setPercentWidth(25);
-            menu.getColumnConstraints().addAll(cc, cc, cc, cc);
-
+        //Hvis Y er størst:
+        if ((c.getToX() - c.getFromX()) > (c.getToY() - c.getFromY())) {
+            double centerX = ((c.getToX() - c.getFromX()) / 2);
+            double centerY = ((c.getToY() - c.getFromY()) / 2);
+            return new Coords(
+                (c.getFromX() + centerX ) - centerY,
+                (c.getFromX() + centerX) + centerY,
+                c.getFromY(),
+                c.getToY()
+            );
+        }
+        //MOTSATT:
+        else {
+            double centerX = ((c.getToX() - c.getFromX()) / 2);
+            double centerY = ((c.getToY() - c.getFromY()) / 2);
+            return new Coords(
+                c.getFromX(),
+                c.getToX(),
+                (c.getFromY() + centerY ) - centerX,
+                (c.getFromY() + centerY) + centerX
+            );
+        }
     }
 
     /**
@@ -255,38 +210,61 @@ public class GUI extends Application
         conway.setTextFill(NOTSELECTED);
     }
 
-    public static void testDraw()
+    /**
+     * Brukes til å bygge alle elementene som går inn i GUI.
+     * Metoden er kun til for å slippe rot i startmetoden.
+     */
+    public static void build()
     {
-        CustomWritableImage fraktal = new CustomWritableImage(800,800);
+        //Definerer menyen:
+        createMenu();
 
-        // Koordinatsystem for mandelbroten
-        //Coords coords = new Coords(-2.0,0.5,-1.25,1.25); //Hvor kommer disse tallene fra? - Magnus
-        //Coords coords = new Coords(-2.0,2,-2,2);
-        // For å regne ut inkrement
-        ConvertCoordinates convert = new ConvertCoordinates(
-                coords,
-                fraktal.getCoords()
-        );
+        //Definerer visningsområdet
+        stack = new StackPane();
+        markings = new Group();
+        pane = new Pane();
+        presenter = new ImageView();
+        stack.getChildren().addAll(presenter, pane);
+        pane.getChildren().add(markings);
 
-        // Opprette mandelbrot objekt
-        mandel = new Mandelbrot(
-                coords,
-                convert.computeXIncrement(),
-                convert.computeYIncrement()
-        );
-        //mandel = new Mandelbrot(-1, 1, -1, 1, 0.002, 0.002);
+        //Setter opp vinduet:
+        root = new BorderPane();
+        root.setTop(menu);
+        root.setCenter(stack);
+        started = false;
+    }
 
-        ArrayList<PointLine> line = mandel.getPoints();
+    /**
+     * Lager elementer til menyen og setter stil på dem.
+     */
+    public static void createMenu()
+    {
+        //Creating menu elements:
+        mandelbrot = new Label("Mandelbrot");
+        bifurcation = new Label("Bifurcation");
+        cellulærAutomat = new Label("Cellulær automat");
+        conway = new Label("Conway's \"game of life\"");
 
-        // For å skrive til bilde
-        PixelWriter pixelWriter = fraktal.getPixelWriter();
-            for(int y = 0;y<800;++y){
-                    // En linje for hver y koordinat (langsgående.
-                    PointLine current = line.get(y);
-                    for(int x=0;x<800;++x){
-                            pixelWriter.setColor(x,y,current.getPoint(x).getColor());
-                    }
-            }
-        presenter.setImage(fraktal);
+        //Styling:
+        mandelbrot.setTextFill(NOTSELECTED);
+        mandelbrot.setFont(menufont);
+        mandelbrot.setAlignment(Pos.CENTER);
+        bifurcation.setTextFill(NOTSELECTED);
+        bifurcation.setFont(menufont);
+        bifurcation.setAlignment(Pos.CENTER);
+        cellulærAutomat.setTextFill(NOTSELECTED);
+        cellulærAutomat.setFont(menufont);
+        cellulærAutomat.setAlignment(Pos.CENTER);
+        conway.setTextFill(NOTSELECTED);
+        conway.setFont(menufont);
+        conway.setAlignment(Pos.CENTER);
+
+        //Adding to grid:
+        menu = new GridPane();
+        menu.addRow(0, mandelbrot, bifurcation, cellulærAutomat, conway);
+        ColumnConstraints cc = new ColumnConstraints();
+        cc.setPercentWidth(25);
+        menu.getColumnConstraints().addAll(cc, cc, cc, cc);
+
     }
 }
