@@ -27,6 +27,10 @@ public class CustomWritableImage extends WritableImage
 		coords = new Coords((double)width,(double)height);
 	}
 
+	public void setCoords(Coords coords) {
+		this.coords = coords;
+	}
+
 	public Coords getCoords()
 	{
 		return coords;

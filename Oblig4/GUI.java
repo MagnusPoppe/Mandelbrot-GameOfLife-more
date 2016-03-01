@@ -3,7 +3,6 @@ package Oblig4;/**
  */
 
 import Oblig4.Eksempel.CustomWritableImage;
-import Oblig4.Mandelbrot.ColoredPoint;
 import Oblig4.Mandelbrot.Mandelbrot;
 import Oblig4.Mandelbrot.PointLine;
 import Oblig4.Scale.ConvertCoordinates;
@@ -23,7 +22,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class GUI extends Application
 {
@@ -46,7 +44,7 @@ public class GUI extends Application
         static Pane pane;
         static ImageView presenter;
         static WritableImage graph;
-
+        static boolean started;
 
     public static void main(String[] args)
     {
@@ -74,6 +72,10 @@ public class GUI extends Application
             });
 
             stack.setOnMousePressed( e1 -> {
+
+                //Den krasjer om dette ikke gjøres.
+                if ( !started ) return;
+
                 double fromX = e1.getX();
                 double fromY = e1.getY();
                 Line x1 = new Line(fromX, fromY, fromX, fromY);
@@ -81,25 +83,75 @@ public class GUI extends Application
                 Line y1 = new Line(fromX, fromY, fromX, fromY);
                 Line y2 = new Line(fromX, fromY, fromX, fromY);
                 markings.getChildren().addAll(x1, x2, y1, y2);
+
+                //Oppdatering per linje under dragning.
                 stack.setOnMouseDragged( e2 -> {
                     x1.setEndX(e2.getX());
-
                     x2.setStartY(e2.getY());
                     x2.setEndX(e2.getX());
                     x2.setEndY(e2.getY());
-
                     y1.setEndY(e2.getY());
-
                     y2.setStartX(e2.getX());
                     y2.setEndX(e2.getX());
                     y2.setEndY(e2.getY());
                 });
+
+                //når musen slippes:
                 stack.setOnMouseReleased( e3 -> {
                     double toX = e3.getX();
                     double toY = e3.getY();
                     markings.getChildren().clear();
+
+                    Coords newFrame = new Coords(fromX, fromY, toX, toY);
+                    zoom(newFrame);
                 });
             });
+    }
+
+    /**
+     * Genererer nytt bilde basert på en ramme.
+     *
+     * TODO: 
+     *
+     * @param frame
+     */
+    public void zoom(Coords frame)
+    {
+
+        CustomWritableImage img = new CustomWritableImage(800, 800);
+        // Koordinatsystem for mandelbroten
+
+            //DATA MANGELER! HER MÅ DET KONVERTERES OVER FRA BILDEKOORDINATER TIL MANDELBROT
+            Coords coords = new Coords(-2.0,2,-2,2);
+
+        // For å regne ut inkrement
+        ConvertCoordinates convert = new ConvertCoordinates(
+
+                frame,
+                coords
+                //Istedenfor "img.getCoords()"
+
+        );
+
+        // Opprette mandelbrot objekt
+        Mandelbrot mandel = new Mandelbrot(
+                coords,
+                convert.computeXIncrement(),
+                convert.computeYIncrement()
+        );
+
+        ArrayList<PointLine> line = mandel.getPoints();
+
+        // For å skrive til bilde
+        PixelWriter pixelWriter = img.getPixelWriter();
+        for(int y = 0;y<800;++y){
+            // En linje for hver y koordinat (langsgående.
+            PointLine current = line.get(y);
+            for(int x=0;x<800;++x){
+                pixelWriter.setColor(x,y,current.getPoint(x).getColor());
+            }
+        }
+        presenter.setImage(img);
     }
 
     /**
@@ -123,12 +175,14 @@ public class GUI extends Application
             root = new BorderPane();
             root.setTop(menu);
             root.setCenter(stack);
+            started = false;
     }
 
     /**
      * Lager elementer til menyen og setter stil på dem.
      */
-    public static void createMenu() {
+    public static void createMenu()
+    {
         //Creating menu elements:
             mandelbrot = new Label("Mandelbrot");
             bifurcation = new Label("Bifurcation");
@@ -162,8 +216,10 @@ public class GUI extends Application
      * Setter valgt fargen på en gitt label.
      * @param lbl
      */
-    public static void select(Label lbl) {
+    public static void select(Label lbl)
+    {
         lbl.setTextFill(SELECTED);
+        started = true;
     }
 
     /**
