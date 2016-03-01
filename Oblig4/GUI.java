@@ -158,6 +158,7 @@ public class GUI extends Application
     /**
      * Tillater brukeren å dra fra og til alle mulige retninger.
      * litt lang kode p.g.a. manglende setmetoder (gadd ikke å generere...) :D
+     *
      * @param c
      * @return
      */
@@ -187,6 +188,11 @@ public class GUI extends Application
      * Fikser på skjermformatet når bruker zoomer så
      * det ikke blir strukket bilde. JEG SKAL IKKE HA NOE
      * STRUKKET BILDE !!!
+     *
+     * NOTAT: Det virker som første zoom alltid er buggy, mens
+     *        resten er fine. Skjønner ikke helt hvorfor.
+     *                                              -Magnus
+     *
      * @param c
      * @return Perfect coordinates for zooming.
      */
