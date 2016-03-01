@@ -97,7 +97,7 @@ public class GUI extends Application
                 stack.setOnMouseReleased( e3 -> {
                     double toX = e3.getX();
                     double toY = e3.getY();
-                    pane.getChildren().add(markings);
+                    markings.getChildren().clear();
                 });
             });
     }
@@ -117,6 +117,8 @@ public class GUI extends Application
             pane = new Pane();
             presenter = new ImageView();
             stack.getChildren().addAll(presenter, pane);
+            pane.getChildren().add(markings);
+
         //Setter opp vinduet:
             root = new BorderPane();
             root.setTop(menu);
