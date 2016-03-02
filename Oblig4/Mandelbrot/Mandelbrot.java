@@ -94,35 +94,4 @@ public class Mandelbrot {
     public Coords getCoords() {
         return new Coords(xFrom, xTo, yFrom, yTo);
     }
-
-    /**
-     * Metoden mottar et nytt zoomet koordinatsystem og
-     * regner om til mandelbrot koordinater.
-     *
-     * @param old Mandelbrot coordinates
-     * @param zoom The new "zoomed" coordinates
-     * @param window the window coordnates
-     * @return new mandelbrot koordinates.
-     */
-    public static Coords newZoomCoords(Coords old, Coords zoom, Coords window) {
-        double windowWidth = window.getToX() - window.getFromX();
-        double windowHeight = window.getToY() - window.getFromY();
-
-        double relativeStartX = zoom.getFromX() / windowWidth;
-        double relativeEndX = zoom.getToX() / windowWidth;
-        double relativeStartY = zoom.getFromY() / windowHeight;
-        double relativeEndY = zoom.getToY() / windowHeight;
-
-        double oldRelativeStartX = 0;
-        double oldRelativeEndX = old.getToX() - old.getFromX();
-        double oldRelativeStartY = 0;
-        double oldRelativeEndY = old.getToY() - old.getFromY();
-
-        double newStartX = relativeStartX * (old.getToX() - old.getFromX()) + old.getFromX();
-        double newEndX = relativeEndX * (old.getToX() - old.getFromX()) + old.getFromX();
-        double newStartY = relativeStartY * (old.getToY() - old.getFromY()) + old.getFromY();
-        double newEndY = relativeEndY * (old.getToY() - old.getFromY()) + old.getFromY();
-
-        return new Coords(newStartX, newEndX, newStartY, newEndY);
-    }
 }

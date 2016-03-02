@@ -4,6 +4,7 @@ package Oblig4;/**
 
 import Oblig4.Eksempel.CustomWritableImage;
 import Oblig4.Mandelbrot.Mandelbrot;
+import Oblig4.Mandelbrot.Point;
 import Oblig4.Mandelbrot.PointLine;
 import Oblig4.Scale.ConvertCoordinates;
 import Oblig4.Scale.Coords;
@@ -34,8 +35,9 @@ public class GUI extends Application
         private static Coords coords;
 
     //Grafiske elementer til top-menyen:
-        static GridPane menu;
-        static Label mandelbrot, bifurcation, cellulærAutomat, conway;
+        static GridPane menu, mandelMenu;
+        static Label mandelbrot, bifurcation, cellulærAutomat, conway,
+                     blueScale, redScale, greenScale, skyblueScale, greyScale;
         final static Color NOTSELECTED = Color.DARKGRAY;
         final static Color SELECTED = Color.SKYBLUE;
         final static Font menufont = new Font("Roboto, Helvetica, Arial", 18);
@@ -56,28 +58,50 @@ public class GUI extends Application
     @Override
     public void start(Stage stage)
     {
-        //Starter kontrolleren:
+        // Starter kontrolleren:
             ctrl = new Ctrl();
 
-        //Bestemmer stage/scene innstillinger:
+        // Bestemmer stage/scene innstillinger:
             Scene scene = new Scene(root, STAGEX, STAGEY);
             stage.setScene(scene);
             stage.setResizable(false);
             stage.setTitle("Obligatorisk øving #4");
             stage.show();
 
-        //Lyttefunksjoner:
+        // Lyttefunksjoner:
 
             coords = new Coords(-2.0, 2.0, -2.0, 2.0);
 
             mandelbrot.setOnMouseClicked(e-> {
+                // Klargjør for ny vising:
+                    deSelect();
+                    presenter.setImage(null);
+                //createMandelbrotMenu();
                 zoom(new Coords(0, 800, 0, 800));
                 select(mandelbrot);
+            });
+            bifurcation.setOnMouseClicked(e-> {
+                // Klargjør for ny vising:
+                    deSelect();
+                    presenter.setImage(null);
+                    select(bifurcation);
+            });
+            cellulærAutomat.setOnMouseClicked(e-> {
+                // Klargjør for ny vising:
+                    deSelect();
+                    presenter.setImage(null);
+                    select(cellulærAutomat);
+            });
+            conway.setOnMouseClicked(e-> {
+                // Klargjør for ny vising:
+                    deSelect();
+                    presenter.setImage(null);
+                    select(conway);
             });
 
             stack.setOnMousePressed( e1 -> {
 
-                //Den krasjer om dette ikke gjøres.
+                // Den krasjer om dette ikke gjøres.
                 if ( !started ) return;
 
                 double fromX = e1.getX();
@@ -88,7 +112,7 @@ public class GUI extends Application
                 Line y2 = new Line(fromX, fromY, fromX, fromY);
                 markings.getChildren().addAll(x1, x2, y1, y2);
 
-                //Oppdatering per linje under dragning.
+                // Oppdatering per linje under dragning.
                 stack.setOnMouseDragged( e2 -> {
                     x1.setEndX(e2.getX());
                     x2.setStartY(e2.getY());
@@ -100,7 +124,7 @@ public class GUI extends Application
                     y2.setEndY(e2.getY());
                 });
 
-                //når musen slippes:
+                // Når musen slippes:
                 stack.setOnMouseReleased( e3 -> {
                     double toX = e3.getX();
                     double toY = e3.getY();
@@ -126,10 +150,10 @@ public class GUI extends Application
         CustomWritableImage img = new CustomWritableImage(800, 800);
 
         // Koordinatsystem for mandelbroten
-        coords = Mandelbrot.newZoomCoords(coords, frame, img.getCoords());
+        coords = ConvertCoordinates.computeNewMandelbrot(coords, frame, img.getCoords());
 
         // For å regne ut inkrement
-        System.out.println((coords.getToX() - coords.getFromX()));
+        System.out.println("Nåværende rammestørrelse: "+(coords.getToX() - coords.getFromX()));
 
         ConvertCoordinates convert = new ConvertCoordinates(
                 coords, img.getCoords()
@@ -299,5 +323,27 @@ public class GUI extends Application
         cc.setPercentWidth(25);
         menu.getColumnConstraints().addAll(cc, cc, cc, cc);
 
+    }
+
+    public static void createMandelbrotMenu()
+    {
+        redScale     = new Label("Rød");
+        greenScale   = new Label("Grønn");
+        blueScale    = new Label("Blå");
+        greyScale    = new Label("Gråtoner");
+        skyblueScale = new Label("skyblå<3");
+
+        mandelMenu = new GridPane();
+        mandelMenu.addRow(0, redScale, greenScale, blueScale, greyScale, skyblueScale);
+        ColumnConstraints cc = new ColumnConstraints();
+        cc.setPercentWidth(20);
+        mandelMenu.getColumnConstraints().addAll(cc, cc, cc, cc, cc);
+        root.setBottom(mandelbrot);
+
+        redScale.setOnMouseClicked(e-> Point.setRedScale());
+        greenScale.setOnMouseClicked(e -> Point.setGreenScale());
+        blueScale.setOnMouseClicked(e-> Point.setBlueScale());
+        skyblueScale.setOnMouseClicked(e-> Point.setSkyblueScale());
+        greyScale.setOnMouseClicked(e-> Point.reset());
     }
 }
