@@ -76,7 +76,7 @@ public class GUI extends Application
                 // Klargjør for ny vising:
                     deSelect();
                     presenter.setImage(null);
-                //createMandelbrotMenu();
+                createMandelbrotMenu();
                 zoom(new Coords(0, 800, 0, 800));
                 select(mandelbrot);
             });
@@ -338,7 +338,7 @@ public class GUI extends Application
         ColumnConstraints cc = new ColumnConstraints();
         cc.setPercentWidth(20);
         mandelMenu.getColumnConstraints().addAll(cc, cc, cc, cc, cc);
-        root.setBottom(mandelbrot);
+        root.setBottom(mandelMenu);
 
         redScale.setOnMouseClicked(e-> Point.setRedScale());
         greenScale.setOnMouseClicked(e -> Point.setGreenScale());
