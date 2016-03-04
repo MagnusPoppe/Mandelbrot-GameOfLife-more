@@ -3,8 +3,10 @@ package Oblig4.Mandelbrot;
 import Oblig4.GUI;
 import Oblig4.Mandelbrot.Logikk.ColorChoice;
 import Oblig4.Mandelbrot.Logikk.ColorSelector;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -13,7 +15,7 @@ import javafx.scene.text.TextAlignment;
  * GUI-element for å velge farger til mandelbrot.
  * Opprettes som en ferdig "HBox"
  */
-public class SelectorPane extends HBox
+public class SelectorPane extends GridPane
 {
 
 	private Label grayWhite;
@@ -36,7 +38,13 @@ public class SelectorPane extends HBox
 
 	private void init()
 	{
-		this.getChildren().addAll(grayWhite, red, blue, green);
+		this.addRow(0, grayWhite, red,blue,green);
+		ColumnConstraints cc = new ColumnConstraints();
+		cc.setPercentWidth(25);
+		this.setPadding(new Insets(20,20,20,20));
+
+		this.getColumnConstraints().addAll(cc,cc,cc,cc);
+
 		this.getChildren().forEach(e->{
 			Label mod = (Label)(e);
 			mod.setFont(GUI.menufont);

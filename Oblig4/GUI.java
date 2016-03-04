@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -142,7 +143,7 @@ public class GUI extends Application
 
         //Adding to grid:
         menu = new GridPane();
-        menu.addRow(0, mandelbrot, bifurcation, cellulærAutomat, conway);
+        menu.addRow(0, mandelbrot, bifurcation, cellulærAutomat, conway, new Button("LØKSUPPE"));
         ColumnConstraints cc = new ColumnConstraints();
         cc.setPercentWidth(25);
         menu.getColumnConstraints().addAll(cc, cc, cc, cc);
