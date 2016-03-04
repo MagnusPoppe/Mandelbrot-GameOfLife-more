@@ -26,7 +26,8 @@ public class Point extends ColoredPoint {
 
 	public Point(int iterations)
 	{
-		if(iterations == 100) iterations = 10;
+		//If setningen må være lik iterasjonslimit i mandelbrot.
+		if(iterations == 200) iterations = 10;
 		else iterations += 50;
 
 		if (blueScale) color = Color.rgb(10,10,iterations);

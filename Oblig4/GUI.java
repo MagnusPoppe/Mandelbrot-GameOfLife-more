@@ -8,6 +8,7 @@ import Oblig4.Mandelbrot.Point;
 import Oblig4.Mandelbrot.PointLine;
 import Oblig4.Scale.ConvertCoordinates;
 import Oblig4.Scale.Coords;
+import Oblig4.cellulærAutomat.AutomatCTRL;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -15,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -47,7 +47,6 @@ public class GUI extends Application
         static Group markings;
         static Pane pane;
         static ImageView presenter;
-        static WritableImage graph;
         static boolean started;
 
     public static void main(String[] args)
@@ -71,33 +70,7 @@ public class GUI extends Application
         // Lyttefunksjoner:
 
             coords = new Coords(-2.0, 2.0, -2.0, 2.0);
-
-            mandelbrot.setOnMouseClicked(e-> {
-                // Klargjør for ny vising:
-                    deSelect();
-                    presenter.setImage(null);
-                createMandelbrotMenu();
-                zoom(new Coords(0, 800, 0, 800));
-                select(mandelbrot);
-            });
-            bifurcation.setOnMouseClicked(e-> {
-                // Klargjør for ny vising:
-                    deSelect();
-                    presenter.setImage(null);
-                    select(bifurcation);
-            });
-            cellulærAutomat.setOnMouseClicked(e-> {
-                // Klargjør for ny vising:
-                    deSelect();
-                    presenter.setImage(null);
-                    select(cellulærAutomat);
-            });
-            conway.setOnMouseClicked(e-> {
-                // Klargjør for ny vising:
-                    deSelect();
-                    presenter.setImage(null);
-                    select(conway);
-            });
+            activateMenu();
 
             stack.setOnMousePressed( e1 -> {
 
@@ -246,6 +219,42 @@ public class GUI extends Application
         }
     }
 
+    private void activateMenu() {
+        mandelbrot.setOnMouseClicked(e-> {
+            // Klargjør for ny vising:
+            deSelect();
+            presenter.setImage(null);
+            createMandelbrotMenu();
+            zoom(new Coords(0, 800, 0, 800));
+            select(mandelbrot);
+        });
+        bifurcation.setOnMouseClicked(e-> {
+            // Klargjør for ny vising:
+            deSelect();
+            presenter.setImage(null);
+            select(bifurcation);
+        });
+        cellulærAutomat.setOnMouseClicked(e -> {
+            // Klargjør for ny vising:
+            deSelect();
+            AutomatCTRL automat = new AutomatCTRL(800, 799);
+
+            // Setter nye regler:
+            boolean[] myRules = {true, false, false, true, true, false, true, false};
+            automat.createNewRules(myRules);
+
+            // Setter opp GUI:
+            presenter.setImage(automat.getImg());
+            root.setBottom(automat.getAutomatMenu());
+            select(cellulærAutomat);
+        });
+        conway.setOnMouseClicked(e-> {
+            // Klargjør for ny vising:
+            deSelect();
+            presenter.setImage(null);
+            select(conway);
+        });
+    }
     /**
      * Setter valgt fargen på en gitt label.
      * @param lbl
