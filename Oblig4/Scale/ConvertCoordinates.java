@@ -39,50 +39,76 @@ public class ConvertCoordinates
 	 */
 	private void computeScalingFactors()
 	{
-		scalingFactorX = (to.getToX()-to.getFromX())/(from.getToX()-from.getFromX());
-		scalingFactorY = (to.getToY()-to.getFromY())/(from.getToY()-from.getFromY());
-		scalingConstantX = to.getFromX();
-		scalingConstantY = to.getFromY();
+		scalingFactorX = computeXScalingFactor(to,from);
+		scalingFactorY = computeYScalingFactor(to,from);
+		scalingConstantX = computeScalingConstantX(to,from);
+		scalingConstantY = computeScalingConstantY(to,from);
+	}
+
+	/**
+	 * Konverter fra "from" koordinatsystem til "to" koordinatsystem
+	 * @param x - x koordinat
+	 * @param y - y koordinat
+	 * @return
+	 */
+	public double[] convert(double x, double y)
+	{
+		double newX = (x - from.getFromX())*scalingFactorX+scalingConstantX;
+		double newY = (y - from.getFromY())*scalingFactorY+scalingConstantY;
+		return new double[]{newX,newY};
+	}
+
+	public static double[] convert(double x, double y, Coords from, Coords to)
+	{
+
+		double scalingFactorX = computeXScalingFactor(to,from);
+		double scalingFactorY = computeYScalingFactor(to,from);
+		double scalingConstantX = computeScalingConstantX(to,from);
+		double scalingConstantY = computeScalingConstantY(to,from);
+
+		double newX = (x - from.getFromX())*scalingFactorX+scalingConstantX;
+		double newY = (y - from.getFromY())*scalingFactorY+scalingConstantY;
+		return new double[]{newX,newY};
 	}
 
 	public double computeXIncrement()
 	{
 		return 1.0/scalingFactorX;
 	}
-
 	public double computeYIncrement()
 	{
 		return 1.0/scalingFactorY;
 	}
 
-	/**
-	 * Metoden mottar "skjerm-koordinatsystem" og konverterer til
-	 * mandelbrotsystemet.
-	 *
-	 * @param old Mandelbrot coordinates
-	 * @param zoom The new "zoomed" coordinates
-	 * @param window the window coordnates
-	 * @return new mandelbrot koordinates.
-	 */
-	public static Coords computeNewMandelbrot(Coords old, Coords zoom, Coords window) {
-		double windowWidth = window.getToX() - window.getFromX();
-		double windowHeight = window.getToY() - window.getFromY();
-
-		double relativeStartX = zoom.getFromX() / windowWidth;
-		double relativeEndX = zoom.getToX() / windowWidth;
-		double relativeStartY = zoom.getFromY() / windowHeight;
-		double relativeEndY = zoom.getToY() / windowHeight;
-
-		double oldRelativeStartX = 0;
-		double oldRelativeEndX = old.getToX() - old.getFromX();
-		double oldRelativeStartY = 0;
-		double oldRelativeEndY = old.getToY() - old.getFromY();
-
-		double newStartX = relativeStartX * (old.getToX() - old.getFromX()) + old.getFromX();
-		double newEndX = relativeEndX * (old.getToX() - old.getFromX()) + old.getFromX();
-		double newStartY = relativeStartY * (old.getToY() - old.getFromY()) + old.getFromY();
-		double newEndY = relativeEndY * (old.getToY() - old.getFromY()) + old.getFromY();
-
-		return new Coords(newStartX, newEndX, newStartY, newEndY);
+	public static double computeXIncrement(Coords from, Coords to)
+	{
+		return 1.0/computeScalingConstantX(from,to);
 	}
+
+	public static double computeYIncrement(Coords from, Coords to)
+	{
+		return 1.0/computeScalingConstantY(from,to);
+	}
+
+// --------- Lagt til for å unngå duplisering av kode!
+	private static double computeXScalingFactor(Coords from, Coords to)
+	{
+		return (to.getToX()-to.getFromX())/(from.getToX()-from.getFromX());
+	}
+
+	private static double computeYScalingFactor(Coords from, Coords to)
+	{
+		return (to.getToY()-to.getFromY())/(from.getToY()-from.getFromY());
+	}
+
+	private static double computeScalingConstantX(Coords to, Coords from)
+	{
+		return to.getFromX();
+	}
+
+	private static double computeScalingConstantY(Coords to, Coords from)
+	{
+		return to.getFromY();
+	}
+
 }

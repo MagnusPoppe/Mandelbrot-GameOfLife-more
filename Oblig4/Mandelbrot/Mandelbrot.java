@@ -11,62 +11,36 @@ import java.util.ArrayList;
  */
 public class Mandelbrot {
     //+- mayb
-    private static final double xRangeDefault = 2.0;
-    private static final double yRangeDefault = 2.0;
-    private static int iterationLimit = 200;
+    public static final Coords defaultMandelbrotCoords = new Coords(-2.0,2.0,-2.0,2.0);
+    public static int iterationLimit = 200;
     private double xIncrement = 0.001; // OBS: Må matche med oppløsning på det endelige bildet!
     private double yIncrement = 0.001; // ------------------------ "" ------------------------
-
-    private double xFrom;
-    private double xTo;
-    private double yFrom;
-    private double yTo;
-
     // Instansvariabler
-    private ArrayList<PointLine> pointLines; //Skjønner ikke helt hvordan denne er implementert.. -Magnus
+    private final ArrayList<ArrayList<Integer>> pointLines = new ArrayList<>();
 
-    public Mandelbrot() {
-        this(0.0 - xRangeDefault, xRangeDefault, 0.0 - yRangeDefault, yRangeDefault);
-    }
+    private Coords coords;
 
-    public Mandelbrot(double xFrom, double xTo, double yFrom, double yTo) {
-        this(xFrom, xTo, yFrom, yTo, 0.01, 0.01);
-    }
-
-    public Mandelbrot(double xFrom, double xTo, double yFrom, double yTo, double xIncrement, double yIncrement) {
-        pointLines = new ArrayList<>();
-        this.xIncrement = xIncrement;
-        this.yIncrement = yIncrement;
-
-        this.xFrom = xFrom;
-        this.xTo = xTo;
-        this.yFrom = yFrom;
-        this.yTo = yTo;
-        constructPoints();
+    public Mandelbrot(double xIncrement, double yIncrement)
+    {
+        this(defaultMandelbrotCoords, xIncrement,yIncrement);
     }
 
     public Mandelbrot(Coords area, double xIncrement, double yIncrement) {
-        this(area.getFromX(), area.getToX(), area.getFromY(), area.getToY(), xIncrement, yIncrement);
-    }
-
-    /**
-     * Funksjon for å sette inkremeneter
-     *
-     * @param xIncrement inkrement for punkter man går over
-     */
-    public void setxIncrement(double xIncrement) {
+        coords = area;
         this.xIncrement = xIncrement;
+        this.yIncrement = yIncrement;
+
+        constructPoints();
     }
 
     private void constructPoints() {
-        for (double y = yFrom; y <= yTo; y += yIncrement) {
-            PointLine pointLine = new PointLine();
-            for (double x = xFrom; x <= xTo; x += xIncrement) {
-                Point point = new Point(calculatePoint(new Complex(x, y)));
-                pointLine.addPoint(point);
+
+        for (double y = coords.getFromY(); y < coords.getToY(); y += yIncrement) {
+            ArrayList<Integer> line = new ArrayList<>();
+            for (double x = coords.getFromX(); x < coords.getToX(); x += xIncrement) {
+                line.add(calculatePoint(new Complex(x, y)));
             }
-            //
-            pointLines.add(pointLine);
+            pointLines.add(line);
         }
     }
 
@@ -87,11 +61,14 @@ public class Mandelbrot {
         return temp.add(c);
     }
 
-    public ArrayList<PointLine> getPoints() {
+
+    public ArrayList<ArrayList<Integer>> getPointLines()
+    {
         return pointLines;
     }
 
-    public Coords getCoords() {
-        return new Coords(xFrom, xTo, yFrom, yTo);
+    public Coords getCoords()
+    {
+        return coords;
     }
 }
