@@ -1,4 +1,4 @@
-package Oblig4.Mandelbrot;
+package Oblig4.Mandelbrot.Logikk;
 
 /**
  * Created by Jo Øivind Gjernes on 04.03.2016.

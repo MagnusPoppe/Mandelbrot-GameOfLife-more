@@ -1,4 +1,4 @@
-package Oblig4.Mandelbrot;
+package Oblig4.Mandelbrot.Logikk;
 
 import javafx.scene.paint.Color;
 
@@ -8,12 +8,20 @@ import javafx.scene.paint.Color;
 public class ColorSelector
 {
 	private ColorChoice chosenColor;
-	private static final int baseLine = 40;
-	private static final double scalingFactor = 255.0 / Mandelbrot.iterationLimit;
+	private static final int baseLine = 30;
+	private static final double scalingFactor = (255.0-baseLine) / Mandelbrot.iterationLimit;
+	private Draw callBack;
 
-	public ColorSelector(ColorChoice choice)
+	public ColorSelector(ColorChoice choice, Draw callBack)
 	{
 		this.chosenColor = choice;
+		this.callBack = callBack;
+	}
+
+	public void setColor(ColorChoice colorChoice)
+	{
+		this.chosenColor = colorChoice;
+		callBack.draw();
 	}
 
 	public Color getColor(int iterations)
@@ -38,7 +46,7 @@ public class ColorSelector
 		if (iterations == Mandelbrot.iterationLimit) {
 			return 0;
 		}
-
-		return (int)(iterations*scalingFactor);
+		iterations= (int)(iterations*scalingFactor);
+		return iterations+baseLine;
 	}
 }

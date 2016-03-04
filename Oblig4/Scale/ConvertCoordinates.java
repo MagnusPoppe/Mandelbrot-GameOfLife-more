@@ -39,10 +39,10 @@ public class ConvertCoordinates
 	 */
 	private void computeScalingFactors()
 	{
-		scalingFactorX = computeXScalingFactor(to,from);
-		scalingFactorY = computeYScalingFactor(to,from);
-		scalingConstantX = computeScalingConstantX(to,from);
-		scalingConstantY = computeScalingConstantY(to,from);
+		scalingFactorX = computeXScalingFactor(from,to);
+		scalingFactorY = computeYScalingFactor(from,to);
+		scalingConstantX = computeScalingConstantX(to);
+		scalingConstantY = computeScalingConstantY(to);
 	}
 
 	/**
@@ -58,17 +58,19 @@ public class ConvertCoordinates
 		return new double[]{newX,newY};
 	}
 
-	public static double[] convert(double x, double y, Coords from, Coords to)
+	public static Coords convert(Coords toScale, Coords from, Coords to)
 	{
 
-		double scalingFactorX = computeXScalingFactor(to,from);
-		double scalingFactorY = computeYScalingFactor(to,from);
-		double scalingConstantX = computeScalingConstantX(to,from);
-		double scalingConstantY = computeScalingConstantY(to,from);
+		double scalingFactorX = computeXScalingFactor(from,to);
+		double scalingFactorY = computeYScalingFactor(from,to);
+		double scalingConstantX = computeScalingConstantX(to);
+		double scalingConstantY = computeScalingConstantY(to);
 
-		double newX = (x - from.getFromX())*scalingFactorX+scalingConstantX;
-		double newY = (y - from.getFromY())*scalingFactorY+scalingConstantY;
-		return new double[]{newX,newY};
+		double newX = (toScale.getFromX() - from.getFromX())*scalingFactorX+scalingConstantX;
+		double newY = (toScale.getFromY() - from.getFromY())*scalingFactorY+scalingConstantY;
+		double newToX = (toScale.getToX() - from.getFromX())*scalingFactorX+scalingConstantX;
+		double newToY = (toScale.getToY() - from.getFromY())*scalingFactorY+scalingConstantY;
+		return new Coords(newX,newToX,newY,newToY);
 	}
 
 	public double computeXIncrement()
@@ -82,12 +84,12 @@ public class ConvertCoordinates
 
 	public static double computeXIncrement(Coords from, Coords to)
 	{
-		return 1.0/computeScalingConstantX(from,to);
+		return computeXScalingFactor(to,from);
 	}
 
 	public static double computeYIncrement(Coords from, Coords to)
 	{
-		return 1.0/computeScalingConstantY(from,to);
+		return computeYScalingFactor(to,from);
 	}
 
 // --------- Lagt til for å unngå duplisering av kode!
@@ -101,12 +103,12 @@ public class ConvertCoordinates
 		return (to.getToY()-to.getFromY())/(from.getToY()-from.getFromY());
 	}
 
-	private static double computeScalingConstantX(Coords to, Coords from)
+	private static double computeScalingConstantX(Coords to)
 	{
 		return to.getFromX();
 	}
 
-	private static double computeScalingConstantY(Coords to, Coords from)
+	private static double computeScalingConstantY(Coords to)
 	{
 		return to.getFromY();
 	}

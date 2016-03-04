@@ -39,6 +39,11 @@ public class Coords
 		this.toY = toY;
 	}
 
+	public void enforceProportions()
+	{
+		this.toY = this.fromY+(this.toX-this.fromX);
+	}
+
 	public double getFromX()
 	{
 		return fromX;

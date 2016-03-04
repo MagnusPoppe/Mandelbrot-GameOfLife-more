@@ -1,6 +1,7 @@
-package Oblig4.Mandelbrot;
+package Oblig4.Mandelbrot.Logikk;
 
 
+import Oblig4.Scale.ConvertCoordinates;
 import Oblig4.Scale.Coords;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public class Mandelbrot {
     //+- mayb
     public static final Coords defaultMandelbrotCoords = new Coords(-2.0,2.0,-2.0,2.0);
-    public static int iterationLimit = 200;
+    public static int iterationLimit = 500;
     private double xIncrement = 0.001; // OBS: Må matche med oppløsning på det endelige bildet!
     private double yIncrement = 0.001; // ------------------------ "" ------------------------
     // Instansvariabler
@@ -20,24 +21,31 @@ public class Mandelbrot {
 
     private Coords coords;
 
-    public Mandelbrot(double xIncrement, double yIncrement)
+    public Mandelbrot(Coords drawArea)
     {
-        this(defaultMandelbrotCoords, xIncrement,yIncrement);
+        this(defaultMandelbrotCoords, drawArea);
     }
 
-    public Mandelbrot(Coords area, double xIncrement, double yIncrement) {
+    public Mandelbrot(Coords area, Coords drawArea) throws IllegalArgumentException {
         coords = area;
-        this.xIncrement = xIncrement;
-        this.yIncrement = yIncrement;
-
+        this.xIncrement = ConvertCoordinates.computeXIncrement(area,drawArea);
+        this.yIncrement = ConvertCoordinates.computeYIncrement(area,drawArea);
         constructPoints();
     }
 
-    private void constructPoints() {
+    private boolean boundsCheck()
+    {
+        if(this.xIncrement<1E-16) return false;
+        if(this.yIncrement<1E-16) return false;
+        return true;
+    }
+    private void constructPoints() throws IllegalArgumentException {
+        // Hopp ut dersom steppet er for lite!
+        if(!boundsCheck()) throw new IllegalArgumentException("For liten zoom!");
 
-        for (double y = coords.getFromY(); y < coords.getToY(); y += yIncrement) {
+        for (double y = coords.getFromY(); y <= coords.getToY(); y += yIncrement) {
             ArrayList<Integer> line = new ArrayList<>();
-            for (double x = coords.getFromX(); x < coords.getToX(); x += xIncrement) {
+            for (double x = coords.getFromX(); x <= coords.getToX(); x += xIncrement) {
                 line.add(calculatePoint(new Complex(x, y)));
             }
             pointLines.add(line);
@@ -57,8 +65,9 @@ public class Mandelbrot {
     }
 
     private static Complex nextIteration(Complex prev, Complex c) {
-        Complex temp = prev.square();
-        return temp.add(c);
+        prev.square();
+        prev.add(c);
+        return prev;
     }
 
 

@@ -6,6 +6,8 @@ import javafx.scene.image.WritableImage;
 
 /**
  * Created by Jo Øivind Gjernes on 04.03.2016.
+ *
+ * WritableImage - utvidet med funksjonalitet for å hente ut et koordinatsystem som beskriver bildet.
  */
 public class MandelbrotImage extends WritableImage
 {

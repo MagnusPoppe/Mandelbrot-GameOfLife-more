@@ -17,25 +17,24 @@ import javafx.stage.Stage;
 public class GUI extends Application
 {
     //Globale elementer:
-        static BorderPane root;
-        final static double STAGEX = 800;
-        final static double STAGEY = 880;
-        Ctrl ctrl;
+        BorderPane root;
+        final double STAGEX = 800;
+        final double STAGEY = 880;
 
     //Grafiske elementer til top-menyen:
-        static GridPane menu, mandelMenu;
-        static Label mandelbrot, bifurcation, cellulærAutomat, conway,
+        GridPane menu, mandelMenu;
+        Label mandelbrot, bifurcation, cellulærAutomat, conway,
                      blueScale, redScale, greenScale, skyblueScale, greyScale;
-        final static Color NOTSELECTED = Color.DARKGRAY;
-        final static Color SELECTED = Color.SKYBLUE;
-        final static Font menufont = new Font("Roboto, Helvetica, Arial", 18);
+        public static final Color NOTSELECTED = Color.DARKGRAY;
+        public static final Color SELECTED = Color.SKYBLUE;
+        public static final Font menufont = new Font("Roboto, Helvetica, Arial", 18);
 
     //Grafiske elementer til tegneområdet:
-        static StackPane stack;
-        static Group markings;
-        static Pane pane;
-        static ImageView presenter;
-        private static MandelPane mandelPane = new MandelPane(800,800);
+        StackPane stack;
+        Group markings;
+        Pane pane;
+        ImageView presenter;
+        private static MandelPane mandelPane;
 
     public static void main(String[] args)
     {
@@ -46,8 +45,9 @@ public class GUI extends Application
     public void start(Stage stage)
     {
         // Starter kontrolleren:
-            ctrl = new Ctrl();
-
+            root = new BorderPane();
+            mandelPane = new MandelPane(800,800);
+            build();
         // Bestemmer stage/scene innstillinger:
             Scene scene = new Scene(root, STAGEX, STAGEY);
             stage.setScene(scene);
@@ -64,7 +64,7 @@ public class GUI extends Application
      * Setter valgt fargen på en gitt label.
      * @param lbl
      */
-    public static void select(Label lbl)
+    public void select(Label lbl)
     {
         lbl.setTextFill(SELECTED);
     }
@@ -72,7 +72,7 @@ public class GUI extends Application
     /**
      * Fjerner "valgt" fargen for alle labels.
      */
-    public static void deSelect()
+    public void deSelect()
     {
         mandelbrot.setTextFill(NOTSELECTED);
         bifurcation.setTextFill(NOTSELECTED);
@@ -84,7 +84,7 @@ public class GUI extends Application
      * Brukes til å bygge alle elementene som går inn i GUI.
      * Metoden er kun til for å slippe rot i startmetoden.
      */
-    public static void build()
+    public void build()
     {
         //Definerer menyen:
         createMenu();
@@ -106,7 +106,7 @@ public class GUI extends Application
     /**
      * Lager elementer til menyen og setter stil på dem.
      */
-    public static void createMenu()
+    public void createMenu()
     {
         //Creating menu elements:
         mandelbrot = new Label("Mandelbrot");
@@ -137,7 +137,7 @@ public class GUI extends Application
 
     }
 
-    public static void createMandelbrotMenu()
+    public void createMandelbrotMenu()
     {
         redScale     = new Label("Rød");
         greenScale   = new Label("Grønn");
