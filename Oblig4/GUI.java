@@ -3,12 +3,12 @@ package Oblig4;/**
  */
 
 import Oblig4.Mandelbrot.MandelPane;
+import Oblig4.cellulærAutomat.AutomatPane;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -32,8 +32,7 @@ public class GUI extends Application
     //Grafiske elementer til tegneområdet:
         StackPane stack;
         Group markings;
-        Pane pane;
-        ImageView presenter;
+        Pane presenter;
         private static MandelPane mandelPane;
 
     public static void main(String[] args)
@@ -92,10 +91,9 @@ public class GUI extends Application
         //Definerer visningsområdet
         stack = new StackPane();
         markings = new Group();
-        pane = mandelPane;
-        presenter = new ImageView();
-        stack.getChildren().addAll(presenter, pane);
-        pane.getChildren().add(markings);
+        presenter = new Pane();
+        stack.getChildren().addAll(presenter);
+        presenter.getChildren().add(markings);
 
         //Setter opp vinduet:
         root = new BorderPane();
@@ -118,12 +116,26 @@ public class GUI extends Application
         mandelbrot.setTextFill(NOTSELECTED);
         mandelbrot.setFont(menufont);
         mandelbrot.setAlignment(Pos.CENTER);
+        mandelbrot.setOnMouseClicked(e->{
+            deselect();
+            stack.getChildren().remove(presenter);
+            presenter = mandelPane;
+            stack.getChildren().add(presenter);
+            mandelbrot.setTextFill(SELECTED);
+        });
         bifurcation.setTextFill(NOTSELECTED);
         bifurcation.setFont(menufont);
         bifurcation.setAlignment(Pos.CENTER);
         cellulærAutomat.setTextFill(NOTSELECTED);
         cellulærAutomat.setFont(menufont);
         cellulærAutomat.setAlignment(Pos.CENTER);
+        cellulærAutomat.setOnMouseClicked(e->{
+            deselect();
+            stack.getChildren().remove(presenter);
+            presenter = new AutomatPane(800,799);
+            stack.getChildren().add(presenter);
+            cellulærAutomat.setTextFill(SELECTED);
+        });
         conway.setTextFill(NOTSELECTED);
         conway.setFont(menufont);
         conway.setAlignment(Pos.CENTER);
@@ -137,20 +149,16 @@ public class GUI extends Application
 
     }
 
-    public void createMandelbrotMenu()
+    private void deselect()
     {
-        redScale     = new Label("Rød");
-        greenScale   = new Label("Grønn");
-        blueScale    = new Label("Blå");
-        greyScale    = new Label("Gråtoner");
-        skyblueScale = new Label("skyblå<3");
-
-        mandelMenu = new GridPane();
-        mandelMenu.addRow(0, redScale, greenScale, blueScale, greyScale, skyblueScale);
-        ColumnConstraints cc = new ColumnConstraints();
-        cc.setPercentWidth(20);
-        mandelMenu.getColumnConstraints().addAll(cc, cc, cc, cc, cc);
-        root.setBottom(mandelMenu);
-
+        // Skrøpelig metode! Krasjer hvis man legger til noe annet en labels
+        menu.getChildren().forEach(e->{
+            if(e instanceof Label) {
+                Label lbl = (Label) e;
+                lbl.setTextFill(NOTSELECTED);
+                e = lbl;
+            }
+        });
     }
+
 }

@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
  * <p>
  * AutomatCTRL brukes som kontroller i MVC til
  * den cellulære automaten. Den kobler sammen
- * klassene automat, AutomatGUI og GUI.
+ * klassene automat, AutomatImage og GUI.
  * <p>
  * Beklager kaos i denne klassen. Det er fordi den
  * endte opp med å bli en sammenslåing av to klasser.
@@ -39,7 +39,7 @@ import javafx.scene.shape.Rectangle;
 public class AutomatCTRL implements ColorSchema
 {
     //De grafiske elementene:
-    AutomatGUI img;
+    AutomatImage img;
     int linewidth;
     Line[] lines;
     int pixelSize;
@@ -58,7 +58,7 @@ public class AutomatCTRL implements ColorSchema
     public AutomatCTRL(int imgSize800, int lineWidth)
     {
         //klargjør de grafiske elementene som skal til GUI
-        img = new AutomatGUI(imgSize800, imgSize800);
+        img = new AutomatImage(imgSize800, imgSize800);
         lines = new Line[lineWidth];
         this.linewidth = lineWidth;
 
@@ -106,7 +106,7 @@ public class AutomatCTRL implements ColorSchema
      *
      * @return
      */
-    private AutomatGUI drawImage()
+    private AutomatImage drawImage()
     {
         return img.writeImage(img, lines, linewidth, pixelSize);
     }
@@ -118,7 +118,7 @@ public class AutomatCTRL implements ColorSchema
      *
      * @return
      */
-    public AutomatGUI getImg()
+    public AutomatImage getImg()
     {
         return img;
     }

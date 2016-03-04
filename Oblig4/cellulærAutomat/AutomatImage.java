@@ -13,9 +13,9 @@ import javafx.scene.image.WritableImage;
  *
  * @author Magnus Poppe Wang
  */
-public class AutomatGUI extends WritableImage implements ColorSchema
+public class AutomatImage extends WritableImage implements ColorSchema
 {
-    public AutomatGUI(@NamedArg("width") int width, @NamedArg("height") int height)
+    public AutomatImage(@NamedArg("width") int width, @NamedArg("height") int height)
     {
         super(width, height);
     }
@@ -41,7 +41,7 @@ public class AutomatGUI extends WritableImage implements ColorSchema
      *
      * @return Ferdig tegnet bilde.
      */
-    public AutomatGUI writeImage(AutomatGUI img, Line[] lines, int linewidth, int pixelSize)
+    public AutomatImage writeImage(AutomatImage img, Line[] lines, int linewidth, int pixelSize)
     {
 
         // Ole! Han er den beste til å tegne!
