@@ -17,8 +17,12 @@ public class MandelbrotImage extends WritableImage
 		super(width, height);
 	}
 
+	/**
+	 * Returnerer "koordinater" for bildet.
+	 * @return coords objekt med koordinatinformasjon for bildet
+	 */
 	public Coords getCoords()
 	{
-		return new Coords(0,this.getWidth(), 0,this.getHeight());
+		return new Coords(0,this.getWidth()-1, 0,this.getHeight()-1);
 	}
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Mandelbrot {
     //+- mayb
     public static final Coords defaultMandelbrotCoords = new Coords(-2.0,2.0,-2.0,2.0);
-    public static int iterationLimit = 500;
+    public static int iterationLimit = 200;
     private double xIncrement = 0.001; // OBS: Må matche med oppløsning på det endelige bildet!
     private double yIncrement = 0.001; // ------------------------ "" ------------------------
     // Instansvariabler
@@ -33,13 +33,24 @@ public class Mandelbrot {
         constructPoints();
     }
 
-    private boolean boundsCheck()
+	/**
+         * Denne sjekker om incrementene er større en minste grense
+         * (Bugger ut dersom incrementene blir for små.)
+         * @return Sann hvis incrementene er store nok
+         */
+        private boolean boundsCheck()
     {
         if(this.xIncrement<1E-16) return false;
         if(this.yIncrement<1E-16) return false;
         return true;
     }
-    private void constructPoints() throws IllegalArgumentException {
+
+	/**
+         * Konstruere en liste med punkter i mandelbrot figuren. Hvert punkt er reperesenteret av antallet iterasjoner man kan kjøre
+         * på mandelbrot-funksjonen før lengden overskrider 4.0
+         * @throws IllegalArgumentException kaster IllegalARgumentException dersom
+         */
+        private void constructPoints() throws IllegalArgumentException {
         // Hopp ut dersom steppet er for lite!
         if(!boundsCheck()) throw new IllegalArgumentException("For liten zoom!");
 
@@ -52,7 +63,13 @@ public class Mandelbrot {
         }
     }
 
-    private static int calculatePoint(Complex C) {
+	/**
+         * Regner ut antall iterasjoner før "lengden" på det komplekse tallet overskrider 2.0
+         * (tar ikke kvadratrot, så sammenligner med kvadratet av vektorlengden altså 4.0)
+         * @param C komplekst tall
+         * @return antall iterasjoner
+         */
+        private static int calculatePoint(Complex C) {
         Complex x = new Complex(); // 0+0i
 
         int iterations = 0;
@@ -64,19 +81,33 @@ public class Mandelbrot {
         return iterations;
     }
 
-    private static Complex nextIteration(Complex prev, Complex c) {
+	/**
+         * Beregn neste iterasjon
+         * Funksjon: forrige_iterasjon * forrige_iterasjon + konstant
+         * @param prev forrige iterasjon
+         * @param c konstant
+         * @return svaret
+         */
+        private static Complex nextIteration(Complex prev, Complex c) {
         prev.square();
         prev.add(c);
         return prev;
     }
 
-
+    /**
+     * Få ut beregnet data!
+     * @return liste over liste av punkter
+     * */
     public ArrayList<ArrayList<Integer>> getPointLines()
     {
         return pointLines;
     }
 
-    public Coords getCoords()
+	/**
+         * Returnerer koordinatene som det jobbes på
+         * @return koordinatene
+         */
+        public Coords getCoords()
     {
         return coords;
     }

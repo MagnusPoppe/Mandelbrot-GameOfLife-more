@@ -27,40 +27,54 @@ public class SelectorPane extends GridPane
 	public SelectorPane(ColorSelector cs)
 	{
 		super();
-		grayWhite = new Label("Gråtoner");
-		red = new Label("Rød");
-		blue = new Label("Blå");
-		green = new Label("Grønn");
+
+
 		this.cs = cs;
+
 		init();
 		initHandlers();
 	}
 
+	/**
+	 * Sette opp layout
+	 */
 	private void init()
 	{
-		this.addRow(0, grayWhite, red,blue,green);
+		grayWhite = new Label("Gråtoner");
+		red = new Label("Rød");
+		blue = new Label("Blå");
+		green = new Label("Grønn");
+
+
+		this.addRow(0, grayWhite,red,blue,green);
 		ColumnConstraints cc = new ColumnConstraints();
 		cc.setPercentWidth(25);
 		this.setPadding(new Insets(20,20,20,20));
 
 		this.getColumnConstraints().addAll(cc,cc,cc,cc);
 
+		// Sett font, o.l. for alle elementer som er lagt til;
 		this.getChildren().forEach(e->{
-			Label mod = (Label)(e);
-			mod.setFont(GUI.menufont);
-			mod.setTextFill(GUI.NOTSELECTED);
-			mod.setTextAlignment(TextAlignment.CENTER);
-			e = mod;
+			if(e instanceof Label) {
+				Label mod = (Label) (e);
+				mod.setFont(GUI.menufont);
+				mod.setTextFill(GUI.NOTSELECTED);
+				mod.setTextAlignment(TextAlignment.CENTER);
+				e = mod;
+			}
 		});
+
 		grayWhite.setTextFill(GUI.SELECTED);
 	}
 
 	private void deselect()
 	{
 		this.getChildren().forEach(e->{
-			Label mod = (Label)(e);
-			mod.setTextFill(GUI.NOTSELECTED);
-			e = mod;
+			if(e instanceof Label) {
+				Label mod = (Label) (e);
+				mod.setTextFill(GUI.NOTSELECTED);
+				e = mod;
+			}
 		});
 	}
 

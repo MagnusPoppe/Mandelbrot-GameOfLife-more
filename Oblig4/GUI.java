@@ -34,7 +34,6 @@ public class GUI extends Application
         StackPane stack;
         Group markings;
         Pane presenter;
-        private static MandelPane mandelPane;
 
     public static void main(String[] args)
     {
@@ -46,7 +45,6 @@ public class GUI extends Application
     {
         // Starter kontrolleren:
             root = new BorderPane();
-            mandelPane = new MandelPane(800,800);
             build();
         // Bestemmer stage/scene innstillinger:
             Scene scene = new Scene(root, STAGEX, STAGEY);
@@ -120,7 +118,8 @@ public class GUI extends Application
         mandelbrot.setOnMouseClicked(e->{
             deselect();
             stack.getChildren().remove(presenter);
-            presenter = mandelPane;
+            presenter = null;
+            presenter = new MandelPane(800,800); // TODO: Fjerne magiske konstanter
             stack.getChildren().add(presenter);
             mandelbrot.setTextFill(SELECTED);
         });

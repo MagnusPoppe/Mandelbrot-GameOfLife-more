@@ -34,7 +34,7 @@ public class MandelPane extends Pane implements Draw
 		clickStack = new Stack<>();
 		imageView = new ImageView();
 		mandelbrotImage = new MandelbrotImage(width,height);
-		colorSelector = new ColorSelector(ColorChoice.BLUE, this);
+		colorSelector = new ColorSelector(ColorChoice.BLACKWHITE, this);
 		ConvertCoordinates conv = new ConvertCoordinates(Mandelbrot.defaultMandelbrotCoords, mandelbrotImage.getCoords());
 		mandelbrot = new Mandelbrot(mandelbrotImage.getCoords());
 		selectorPane = new SelectorPane(colorSelector);

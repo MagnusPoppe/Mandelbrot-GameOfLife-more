@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 
 /**
  * Created by Jo Øivind Gjernes on 04.03.2016.
+ *
+ * Klasse for å velge farge på mandelbrot bildet gitt av antall iterasjoner.
  */
 public class ColorSelector
 {
