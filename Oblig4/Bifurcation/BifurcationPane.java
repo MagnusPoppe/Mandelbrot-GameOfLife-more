@@ -30,7 +30,7 @@ public class BifurcationPane extends Pane
 	public BifurcationPane(int width, int height)
 	{
 		super();
-		func = BifurcationFunction.FUNC2;
+		func = BifurcationFunction.FUNC1;
 		mouseClicks = new Stack<>();
 		bifurcationImage = new FigureImage(width,height);
 		bifurcation = new Bifurcation(bifurcationImage.getCoords()); // DefaultConstruct
@@ -71,7 +71,7 @@ public class BifurcationPane extends Pane
 				ClickCoords coords2 = new ClickCoords((int)e.getSceneX(), (int)e.getSceneY());
 				Coords coords = new Coords(Math.min(coords1.x,coords2.x),Math.max(coords1.x,coords2.x),Math.min(coords1.y,coords2.y),Math.max(coords1.y,coords2.y));
 				Coords converted = ConvertCoordinates.convert(coords, bifurcationImage.getCoords(), bifurcation.getCoords());
-				converted.enforceProportions();
+				converted.enforceBifurcProportions();
 				try {
 					bifurcation = new Bifurcation(converted, bifurcationImage.getCoords(),func);
 				} catch (Exception exep){

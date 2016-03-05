@@ -8,7 +8,10 @@ import java.util.ArrayList;
 /**
  * Created by Jo Øivind Gjernes on 05.03.2016.
  *
- *
+ * TODO: Fikse en bedre implementasjon.
+ * TODO: - Bare samle alle punktene for hver R
+ * TODO: - Så tegne de som er funnet.
+ * TODO: - Problem: må regne om koordinater?
  *
  */
 public class Bifurcation
@@ -21,8 +24,8 @@ public class Bifurcation
 	private ArrayList<ArrayList<Boolean>> points;
 	private double xIncrement;
 	private double yIncrement;
-	private static final int initialIterations = 100;
-	private static final int testIterations = 50;
+	private static final int initialIterations = 75;
+	private static final int testIterations = 300;
 
 
 	public Bifurcation(Coords drawCoords)
