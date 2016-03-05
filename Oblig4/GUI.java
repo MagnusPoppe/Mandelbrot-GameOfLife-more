@@ -2,6 +2,7 @@ package Oblig4;/**
  * Created by Magnu on 25.02.2016.
  */
 
+import Oblig4.Bifurcation.BifurcationPane;
 import Oblig4.Mandelbrot.MandelPane;
 import Oblig4.cellulærAutomat.AutomatPane;
 import javafx.application.Application;
@@ -126,6 +127,14 @@ public class GUI extends Application
         bifurcation.setTextFill(NOTSELECTED);
         bifurcation.setFont(menufont);
         bifurcation.setAlignment(Pos.CENTER);
+        bifurcation.setOnMouseClicked(e->{
+            deselect();
+            stack.getChildren().remove(presenter);
+            presenter = null;
+            presenter = new BifurcationPane(800,800); // TOOD: Fjerne magiske konstanter
+            stack.getChildren().add(presenter);
+            bifurcation.setTextFill(SELECTED);
+        });
         cellulærAutomat.setTextFill(NOTSELECTED);
         cellulærAutomat.setFont(menufont);
         cellulærAutomat.setAlignment(Pos.CENTER);

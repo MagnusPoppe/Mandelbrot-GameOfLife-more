@@ -9,10 +9,10 @@ import javafx.scene.image.WritableImage;
  *
  * WritableImage - utvidet med funksjonalitet for å hente ut et koordinatsystem som beskriver bildet.
  */
-public class MandelbrotImage extends WritableImage
+public class FigureImage extends WritableImage
 {
 
-	public MandelbrotImage(@NamedArg("width") int width, @NamedArg("height") int height)
+	public FigureImage(@NamedArg("width") int width, @NamedArg("height") int height)
 	{
 		super(width, height);
 	}

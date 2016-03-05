@@ -10,6 +10,10 @@ package Oblig4.Scale;
  * Man initialiserer det med hvilket koordinatsystem man skal konvertere fra
  * og hvilket man skal konvertere til. Så kan man putte inn et koordinat og
  * få tilsvarende koordinat ut i det andre systemet.
+ *
+ * MERK:
+ * Klassen er "delvis" konvertert til en statisk klasse,
+ * da invariantene i klassen må oppdateres fra gang til gang...
  */
 public class ConvertCoordinates
 {
@@ -71,15 +75,6 @@ public class ConvertCoordinates
 		double newToX = (toScale.getToX() - from.getFromX())*scalingFactorX+scalingConstantX;
 		double newToY = (toScale.getToY() - from.getFromY())*scalingFactorY+scalingConstantY;
 		return new Coords(newX,newToX,newY,newToY);
-	}
-
-	public double computeXIncrement()
-	{
-		return 1.0/scalingFactorX;
-	}
-	public double computeYIncrement()
-	{
-		return 1.0/scalingFactorY;
 	}
 
 	public static double computeXIncrement(Coords from, Coords to)

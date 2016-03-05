@@ -20,7 +20,7 @@ public class MandelPane extends Pane implements Draw
 {
 
 	private Mandelbrot mandelbrot;
-	private MandelbrotImage mandelbrotImage;
+	private FigureImage figureImage;
 	private ColorSelector colorSelector;
 	private Stack<ClickCoords> clickStack;
 	private ImageView imageView;
@@ -28,15 +28,21 @@ public class MandelPane extends Pane implements Draw
 	private VBox personalLayout;
 
 
+	/**
+	 * Konstruktør for "MandelPane"
+	 *
+	 * @param width Ønsket bredde
+	 * @param height Ønsket høyde
+	 */
 	public MandelPane(int width, int height)
 	{
 		super();
 		clickStack = new Stack<>();
 		imageView = new ImageView();
-		mandelbrotImage = new MandelbrotImage(width,height);
+		figureImage = new FigureImage(width,height);
 		colorSelector = new ColorSelector(ColorChoice.BLACKWHITE, this);
-		ConvertCoordinates conv = new ConvertCoordinates(Mandelbrot.defaultMandelbrotCoords, mandelbrotImage.getCoords());
-		mandelbrot = new Mandelbrot(mandelbrotImage.getCoords());
+		ConvertCoordinates conv = new ConvertCoordinates(Mandelbrot.defaultMandelbrotCoords, figureImage.getCoords());
+		mandelbrot = new Mandelbrot(figureImage.getCoords());
 		selectorPane = new SelectorPane(colorSelector);
 		addEventHandlers();
 		draw();
@@ -45,6 +51,9 @@ public class MandelPane extends Pane implements Draw
 		personalLayout.getChildren().addAll(imageView,selectorPane);
 	}
 
+	/**
+	 * TODO: Fikse skikkelig zoom
+	 */
 	private void addEventHandlers()
 	{
 		imageView.setOnMouseClicked(e -> {
@@ -54,12 +63,12 @@ public class MandelPane extends Pane implements Draw
 				ClickCoords coords1 = clickStack.pop();
 				ClickCoords coords2 = new ClickCoords((int)e.getSceneX(),(int)e.getSceneY());
 				Coords coords = new Coords(Math.min(coords1.x,coords2.x),Math.max(coords1.x,coords2.x),Math.min(coords1.y,coords2.y),Math.max(coords1.y,coords2.y));
-				Coords converted = ConvertCoordinates.convert(coords, mandelbrotImage.getCoords(), mandelbrot.getCoords());
+				Coords converted = ConvertCoordinates.convert(coords, figureImage.getCoords(), mandelbrot.getCoords());
 				converted.enforceProportions();
 				try {
-					mandelbrot = new Mandelbrot(converted, mandelbrotImage.getCoords());
+					mandelbrot = new Mandelbrot(converted, figureImage.getCoords());
 				} catch (Exception exep){
-					mandelbrot = new Mandelbrot(Mandelbrot.defaultMandelbrotCoords, mandelbrotImage.getCoords());
+					mandelbrot = new Mandelbrot(Mandelbrot.defaultMandelbrotCoords, figureImage.getCoords());
 					System.err.println(exep.getMessage());
 				}
 				draw();
@@ -68,31 +77,38 @@ public class MandelPane extends Pane implements Draw
 
 	}
 
+	/**
+	 * Tegn mandelbrot data inn på et bildeobjekt. (generer ikke underliggende mandelbrot data først)
+	 */
 	public void draw()
 	{
 
-		PixelWriter pxl = mandelbrotImage.getPixelWriter();
+		PixelWriter pxl = figureImage.getPixelWriter();
 
 
-		for(int y = 0; y<mandelbrotImage.getHeight()&&y<mandelbrot.getPointLines().size();++y)
+		for(int y = 0; y< figureImage.getHeight()&&y<mandelbrot.getPointLines().size(); ++y)
 		{
 			ArrayList<Integer> pointLine = mandelbrot.getPointLines().get(y);
 
-			for(int x = 0;x<mandelbrotImage.getWidth()&&x<pointLine.size();++x)
+			for(int x = 0; x< figureImage.getWidth()&&x<pointLine.size(); ++x)
 			{
 				pxl.setColor(x,y, colorSelector.getColor(pointLine.get(x)));
 			}
 		}
-		imageView.setImage(mandelbrotImage);
+		imageView.setImage(figureImage);
 	}
 
+	/**
+	 * Zoom ???
+	 * @param zoomTo
+	 */
 	public void zoom(Coords zoomTo)
 	{
-		ConvertCoordinates converter = new ConvertCoordinates(mandelbrotImage.getCoords(), mandelbrot.getCoords());
+		ConvertCoordinates converter = new ConvertCoordinates(figureImage.getCoords(), mandelbrot.getCoords());
 		double[] point1 = converter.convert(zoomTo.getFromX(),zoomTo.getFromY());
 		double[] point2 = converter.convert(zoomTo.getToX(),zoomTo.getToY());
 		Coords newCoords = new Coords(point1[0],point2[0],point1[1],point2[1]);
-		mandelbrot = new Mandelbrot(newCoords, mandelbrotImage.getCoords());
+		mandelbrot = new Mandelbrot(newCoords, figureImage.getCoords());
 	}
 
 }
