@@ -65,13 +65,13 @@ public class BifurcationPane extends Pane
 	{
 		imageView.setOnMouseClicked(e->{
 			if(mouseClicks.isEmpty()){
-				mouseClicks.push(new ClickCoords((int)e.getSceneX(),(int)e.getSceneX()));
+				mouseClicks.push(new ClickCoords((int)e.getSceneX(),(int)bifurcationImage.getHeight()-(int)e.getSceneX()));
 			} else {
 				ClickCoords coords1 = mouseClicks.pop();
-				ClickCoords coords2 = new ClickCoords((int)e.getSceneX(), (int)e.getSceneY());
+				ClickCoords coords2 = new ClickCoords((int)e.getSceneX(), (int)bifurcationImage.getHeight()-(int)e.getSceneY());
 				Coords coords = new Coords(Math.min(coords1.x,coords2.x),Math.max(coords1.x,coords2.x),Math.min(coords1.y,coords2.y),Math.max(coords1.y,coords2.y));
 				Coords converted = ConvertCoordinates.convert(coords, bifurcationImage.getCoords(), bifurcation.getCoords());
-				converted.enforceBifurcProportions();
+				converted.enforceProportions();
 				try {
 					bifurcation = new Bifurcation(converted, bifurcationImage.getCoords(),func);
 				} catch (Exception exep){
