@@ -43,7 +43,7 @@ public class Zoom
 	public Zoom(Coords from, Coords to, ZoomInterface parent, boolean flipYAxis)
 	{
 		this(from,to,parent);
-		flipped=true;
+		flipped=flipYAxis;
 	}
 
 	private void initRect()
