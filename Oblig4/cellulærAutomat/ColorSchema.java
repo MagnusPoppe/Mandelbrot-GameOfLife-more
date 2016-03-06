@@ -11,6 +11,6 @@ import javafx.scene.paint.Color;
 public interface ColorSchema
 {
     final static Color TRUECOLOR = Color.WHITE;
-    final static Color FALSECOLOR = Color.DEEPSKYBLUE;
+    final static Color FALSECOLOR = Color.CRIMSON;
     final static Color BORDERCOLOR = Color.BLACK;
 }

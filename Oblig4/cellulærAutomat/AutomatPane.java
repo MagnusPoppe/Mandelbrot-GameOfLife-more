@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
  */
 public class AutomatPane extends Pane
 {
-	private static final boolean[] defaultRule = {true,false,false,true,true,false,true,false};
+	private static final boolean[] defaultRule = {false,false,false,false,false,false,false,false};
 	AutomatCTRL automat;
 	ImageView imgView;
 	VBox localLayout;

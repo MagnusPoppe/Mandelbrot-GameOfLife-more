@@ -55,8 +55,6 @@ public class GUI extends Application
             stage.show();
 
         // Lyttefunksjoner:
-
-
     }
     /**
      * Brukes til å bygge alle elementene som går inn i GUI.
@@ -137,6 +135,9 @@ public class GUI extends Application
 
     }
 
+    /**
+     * TODO: JAVADOC
+     */
     private void deselect()
     {
         // Skrøpelig metode! Krasjer hvis man legger til noe annet en labels
