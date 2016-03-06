@@ -23,9 +23,8 @@ public class GUI extends Application
 	final double STAGEY = 680;
 
 	//Grafiske elementer til top-menyen:
-	GridPane menu, mandelMenu;
-	Label mandelbrot, bifurcation, cellulærAutomat, conway,
-		blueScale, redScale, greenScale, skyblueScale, greyScale;
+	GridPane menu;
+	Label mandelbrot, bifurcation, cellulærAutomat, conway;
 	public static final Color NOTSELECTED = Color.DARKGRAY;
 	public static final Color SELECTED = Color.SKYBLUE;
 	public static final Font menufont = new Font("Roboto, Helvetica, Arial", 18);
@@ -53,7 +52,7 @@ public class GUI extends Application
 		stage.setTitle("Obligatorisk øving #4");
 		stage.show();
 
-		// Lyttefunksjoner:
+
 	}
 
 	/**
@@ -104,7 +103,7 @@ public class GUI extends Application
 		conway.setAlignment(Pos.CENTER);
 
 		// Eventhandlere for labels
-		addEventHandlers();
+		addMenuEventHandlers();
 
 		//Adding to grid:
 		menu = new GridPane();
@@ -118,7 +117,7 @@ public class GUI extends Application
 	/**
 	 * Her ligger logikken rundt utskifting av "visninger"
 	 */
-	private void addEventHandlers()
+	private void addMenuEventHandlers()
 	{
 		mandelbrot.setOnMouseClicked(e -> {
 			deselectMenuLabels();
