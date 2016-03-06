@@ -44,12 +44,6 @@ public class Coords
 		this.toY = this.fromY+(this.toX-this.fromX);
 	}
 
-	public void enforceBifurcProportions()
-	{
-		// default bifurc ratio
-		this.toY = this.fromY+(this.toX-this.fromX)*(1.0d/(4.0d-2.4d));
-	}
-
 	public double getFromX()
 	{
 		return fromX;
