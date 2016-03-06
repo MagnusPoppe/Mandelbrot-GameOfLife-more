@@ -20,8 +20,8 @@ public class GUI extends Application
 {
     //Globale elementer:
         BorderPane root;
-        final double STAGEX = 800;
-        final double STAGEY = 880;
+        final double STAGEX = 600;
+        final double STAGEY = 680;
 
     //Grafiske elementer til top-menyen:
         GridPane menu, mandelMenu;
@@ -120,7 +120,7 @@ public class GUI extends Application
             deselect();
             stack.getChildren().remove(presenter);
             presenter = null;
-            presenter = new MandelPane(800,800); // TODO: Fjerne magiske konstanter
+            presenter = new MandelPane(600,600); // TODO: Fjerne magiske konstanter
             stack.getChildren().add(presenter);
             mandelbrot.setTextFill(SELECTED);
         });
@@ -131,7 +131,7 @@ public class GUI extends Application
             deselect();
             stack.getChildren().remove(presenter);
             presenter = null;
-            presenter = new BifurcationPane(800,800); // TOOD: Fjerne magiske konstanter
+            presenter = new BifurcationPane(600,600); // TOOD: Fjerne magiske konstanter
             stack.getChildren().add(presenter);
             bifurcation.setTextFill(SELECTED);
         });
@@ -141,7 +141,7 @@ public class GUI extends Application
         cellulærAutomat.setOnMouseClicked(e->{
             deselect();
             stack.getChildren().remove(presenter);
-            presenter = new AutomatPane(800,799);
+            presenter = new AutomatPane(600,599);
             stack.getChildren().add(presenter);
             cellulærAutomat.setTextFill(SELECTED);
         });
