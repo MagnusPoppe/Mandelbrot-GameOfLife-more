@@ -223,7 +223,7 @@ public class AutomatCTRL implements ColorSchema
     {
         for (int i = 0; i < 8; i++)
         {
-            rect[i] = new Rectangle(20, 20);
+            rect[i] = new Rectangle(40, 40);
             rect[i].setFill(FALSECOLOR);
             rect[i].setStroke(BORDERCOLOR);
             userSelection[i] = false;
