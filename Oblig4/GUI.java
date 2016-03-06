@@ -58,27 +58,6 @@ public class GUI extends Application
 
 
     }
-
-    /**
-     * Setter valgt fargen på en gitt label.
-     * @param lbl
-     */
-    public void select(Label lbl)
-    {
-        lbl.setTextFill(SELECTED);
-    }
-
-    /**
-     * Fjerner "valgt" fargen for alle labels.
-     */
-    public void deSelect()
-    {
-        mandelbrot.setTextFill(NOTSELECTED);
-        bifurcation.setTextFill(NOTSELECTED);
-        cellulærAutomat.setTextFill(NOTSELECTED);
-        conway.setTextFill(NOTSELECTED);
-    }
-
     /**
      * Brukes til å bygge alle elementene som går inn i GUI.
      * Metoden er kun til for å slippe rot i startmetoden.
