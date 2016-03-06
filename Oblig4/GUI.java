@@ -122,27 +122,19 @@ public class GUI extends Application
 	{
 		mandelbrot.setOnMouseClicked(e -> {
 			deselectMenuLabels();
-			stack.getChildren().remove(presenter);
-			presenter = null;
-			presenter = new MandelPane(600, 600); // TODO: Fjerne magiske konstanter
-			stack.getChildren().add(presenter);
+			setGraphics(new MandelPane(600,600));
 			selectLabel(mandelbrot);
 		});
 
 		bifurcation.setOnMouseClicked(e -> {
 			deselectMenuLabels();
-			stack.getChildren().remove(presenter);
-			presenter = null;
-			presenter = new BifurcationPane(600, 600); // TOOD: Fjerne magiske konstanter
-			stack.getChildren().add(presenter);
+			setGraphics(new BifurcationPane(600,600));
 			selectLabel(bifurcation);
 		});
 
 		cellulærAutomat.setOnMouseClicked(e -> {
 			deselectMenuLabels();
-			stack.getChildren().remove(presenter);
-			presenter = new AutomatPane(600, 599);
-			stack.getChildren().add(presenter);
+			setGraphics(new AutomatPane(600,599));
 			selectLabel(cellulærAutomat);
 		});
 	}
@@ -167,6 +159,17 @@ public class GUI extends Application
 	private void selectLabel(Label label)
 	{
 		label.setTextFill(SELECTED);
+	}
+
+	/**
+	 * Skifter "visnings" panen
+	 * @param toPresent
+	 */
+	private void setGraphics(Pane toPresent)
+	{
+		stack.getChildren().remove(presenter);
+		presenter = toPresent;
+		stack.getChildren().add(presenter);
 	}
 
 }
