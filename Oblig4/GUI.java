@@ -1,7 +1,10 @@
-package Oblig4;/**
- * Created by Magnu on 25.02.2016.
+package Oblig4;
+
+/**
+ * Created by Magnus on 25.02.2016.
  */
 
+import Oblig4.Conway.Conway;
 import Oblig4.Eksempel.CustomWritableImage;
 import Oblig4.Mandelbrot.Mandelbrot;
 import Oblig4.Mandelbrot.Point;
@@ -11,6 +14,7 @@ import Oblig4.Scale.Coords;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -28,8 +32,8 @@ public class GUI extends Application
 {
     //Globale elementer:
         static BorderPane root;
-        final static double STAGEX = 800;
-        final static double STAGEY = 880;
+        final static double STAGEX = 600;
+        final static double STAGEY = 680;
         Ctrl ctrl;
         private static Mandelbrot mandel;
         private static Coords coords;
@@ -44,8 +48,9 @@ public class GUI extends Application
 
     //Grafiske elementer til tegneområdet:
         static StackPane stack;
-        static Group markings;
-        static Pane pane;
+        static Group zoomMarkings;
+        static Pane zoomMarkLayer;
+        static GridPane grid;
         static ImageView presenter;
         static WritableImage graph;
         static boolean started;
@@ -61,12 +66,14 @@ public class GUI extends Application
         // Starter kontrolleren:
             ctrl = new Ctrl();
 
+        //build();
         // Bestemmer stage/scene innstillinger:
             Scene scene = new Scene(root, STAGEX, STAGEY);
             stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.setTitle("Obligatorisk øving #4");
             stage.show();
+
 
         // Lyttefunksjoner:
 
@@ -74,66 +81,29 @@ public class GUI extends Application
 
             mandelbrot.setOnMouseClicked(e-> {
                 // Klargjør for ny vising:
-                    deSelect();
-                    presenter.setImage(null);
-                createMandelbrotMenu();
-                zoom(new Coords(0, 800, 0, 800));
+                //presenter.setImage(null);
+                //zoom(new Coords(0, 800, 0, 800));
                 select(mandelbrot);
+                display(createMandel());
             });
             bifurcation.setOnMouseClicked(e-> {
                 // Klargjør for ny vising:
-                    deSelect();
-                    presenter.setImage(null);
                     select(bifurcation);
             });
             cellulærAutomat.setOnMouseClicked(e-> {
                 // Klargjør for ny vising:
-                    deSelect();
-                    presenter.setImage(null);
                     select(cellulærAutomat);
             });
             conway.setOnMouseClicked(e-> {
                 // Klargjør for ny vising:
-                    deSelect();
-                    presenter.setImage(null);
-                    select(conway);
+                    select(GUI.conway);
+                    Conway conway = new Conway();
+                    root.setBottom(conway.getMenu());
+                    display(conway.getGUI());
+
             });
 
-            stack.setOnMousePressed( e1 -> {
 
-                // Den krasjer om dette ikke gjøres.
-                if ( !started ) return;
-
-                double fromX = e1.getX();
-                double fromY = e1.getY();
-                Line x1 = new Line(fromX, fromY, fromX, fromY);
-                Line x2 = new Line(fromX, fromY, fromX, fromY);
-                Line y1 = new Line(fromX, fromY, fromX, fromY);
-                Line y2 = new Line(fromX, fromY, fromX, fromY);
-                markings.getChildren().addAll(x1, x2, y1, y2);
-
-                // Oppdatering per linje under dragning.
-                stack.setOnMouseDragged( e2 -> {
-                    x1.setEndX(e2.getX());
-                    x2.setStartY(e2.getY());
-                    x2.setEndX(e2.getX());
-                    x2.setEndY(e2.getY());
-                    y1.setEndY(e2.getY());
-                    y2.setStartX(e2.getX());
-                    y2.setEndX(e2.getX());
-                    y2.setEndY(e2.getY());
-                });
-
-                // Når musen slippes:
-                stack.setOnMouseReleased( e3 -> {
-                    double toX = e3.getX();
-                    double toY = e3.getY();
-                    markings.getChildren().clear();
-
-                    Coords newFrame = new Coords(fromX, toX, fromY, toY);
-                    zoom(newFrame);
-                });
-            });
     }
 
     /**
@@ -141,8 +111,7 @@ public class GUI extends Application
      *
      * @param frame
      */
-    public void zoom(Coords frame)
-    {
+    public void zoom(Coords frame) {
         //Fikser på koordinatene mottat fra brukerinndata:
         frame = correctUserInput(frame);
         frame = correctAspectRatio(frame);
@@ -183,7 +152,7 @@ public class GUI extends Application
      * Tillater brukeren å dra fra og til alle mulige retninger.
      * litt lang kode p.g.a. manglende setmetoder (gadd ikke å generere...) :D
      *
-     * @param c
+     * @param c Ting
      * @return
      */
     public Coords correctUserInput(Coords c)
@@ -252,6 +221,7 @@ public class GUI extends Application
      */
     public static void select(Label lbl)
     {
+        deSelect();
         lbl.setTextFill(SELECTED);
         started = true;
     }
@@ -259,12 +229,16 @@ public class GUI extends Application
     /**
      * Fjerner "valgt" fargen for alle labels.
      */
-    public static void deSelect()
-    {
+    public static void deSelect() {
+        // Fargemarkering meny
         mandelbrot.setTextFill(NOTSELECTED);
         bifurcation.setTextFill(NOTSELECTED);
         cellulærAutomat.setTextFill(NOTSELECTED);
         conway.setTextFill(NOTSELECTED);
+
+        // Fjerner overlayen
+        presenter.setImage(null);
+        root.setBottom(null);
     }
 
     /**
@@ -278,17 +252,65 @@ public class GUI extends Application
 
         //Definerer visningsområdet
         stack = new StackPane();
-        markings = new Group();
-        pane = new Pane();
+        //zoomMarkings = new Group();
+        //zoomMarkLayer = new Pane();
         presenter = new ImageView();
-        stack.getChildren().addAll(presenter, pane);
-        pane.getChildren().add(markings);
+        grid = null;
+        //stack.getChildren().addAll(presenter, grid, zoomMarkLayer);
 
         //Setter opp vinduet:
         root = new BorderPane();
         root.setTop(menu);
         root.setCenter(stack);
         started = false;
+    }
+    public static void display(Node n) {
+        //root.setBottom(null);
+        stack.getChildren().clear();
+        stack.getChildren().add(n);
+    }
+    public Node createMandel() {
+        zoomMarkings = new Group();
+        zoomMarkLayer = new Pane();
+        zoomMarkLayer.getChildren().add(zoomMarkings);
+        zoom(new Coords(0, 800, 0, 800));
+        createMandelbrotMenu();
+        zoomMarkings.setOnMousePressed( e1 -> {
+
+            // Den krasjer om dette ikke gjøres.
+            if ( !started ) return;
+
+            double fromX = e1.getX();
+            double fromY = e1.getY();
+            Line x1 = new Line(fromX, fromY, fromX, fromY);
+            Line x2 = new Line(fromX, fromY, fromX, fromY);
+            Line y1 = new Line(fromX, fromY, fromX, fromY);
+            Line y2 = new Line(fromX, fromY, fromX, fromY);
+            zoomMarkings.getChildren().addAll(x1, x2, y1, y2);
+
+            // Oppdatering per linje under dragning.
+            stack.setOnMouseDragged( e2 -> {
+                x1.setEndX(e2.getX());
+                x2.setStartY(e2.getY());
+                x2.setEndX(e2.getX());
+                x2.setEndY(e2.getY());
+                y1.setEndY(e2.getY());
+                y2.setStartX(e2.getX());
+                y2.setEndX(e2.getX());
+                y2.setEndY(e2.getY());
+            });
+
+            // Når musen slippes:
+            stack.setOnMouseReleased( e3 -> {
+                double toX = e3.getX();
+                double toY = e3.getY();
+                zoomMarkings.getChildren().clear();
+
+                Coords newFrame = new Coords(fromX, toX, fromY, toY);
+                zoom(newFrame);
+            });
+        });
+        return new StackPane(presenter, zoomMarkLayer);
     }
 
     /**
