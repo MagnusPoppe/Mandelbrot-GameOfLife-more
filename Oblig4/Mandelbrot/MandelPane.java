@@ -84,4 +84,10 @@ public class MandelPane extends Pane implements Draw,ZoomInterface
 		draw(); // Tegn bildet på nytt
 	}
 
+	@Override
+	public ImageView getZoomObject()
+	{
+		return imageView;
+	}
+
 }

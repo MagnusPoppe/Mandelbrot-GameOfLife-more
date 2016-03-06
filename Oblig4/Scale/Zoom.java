@@ -82,20 +82,20 @@ public class Zoom
 	{
 		if(parent instanceof Pane){
 		Pane p = (Pane)(parent);
-		p.setOnMousePressed(e->{
+		parent.getZoomObject().setOnMousePressed(e->{
 			rectangle.setX(e.getX());
 			rectangle.setY(e.getY());
 			click.push(new ClickCoords((int)(e.getSceneX()), (int)(flip(e.getY()))));
 			p.getChildren().add(rectangle);
 		});
 
-		p.setOnMouseDragged(e2->{
+		parent.getZoomObject().setOnMouseDragged(e2->{
 			if(!click.isEmpty()) {
 				updateRect(e2.getX(), e2.getY());
 			}
 		});
 
-		p.setOnMouseReleased(e3->{
+		parent.getZoomObject().setOnMouseReleased(e3->{
 			p.getChildren().remove(rectangle);
 			if(!click.isEmpty()){
 				ClickCoords click1 = click.pop();

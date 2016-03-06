@@ -66,4 +66,10 @@ public class BifurcationPane extends Pane implements ZoomInterface
 		bifurcation = new Bifurcation(zoomTo,bifurcationImage.getCoords());
 		draw();
 	}
+
+	@Override
+	public ImageView getZoomObject()
+	{
+		return imageView;
+	}
 }
