@@ -80,7 +80,13 @@ public class MandelPane extends Pane implements Draw,ZoomInterface
 	 */
 	public void zoom(Coords zoomTo)
 	{
-		mandelbrot = new Mandelbrot(zoomTo, figureImage.getCoords());
+		try {
+			mandelbrot = new Mandelbrot(zoomTo, figureImage.getCoords());
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			mandelbrot = new Mandelbrot(Mandelbrot.defaultMandelbrotCoords, figureImage.getCoords());
+			zoom = new Zoom(figureImage.getCoords(), Mandelbrot.defaultMandelbrotCoords, this);
+		}
 		draw(); // Tegn bildet på nytt
 	}
 
