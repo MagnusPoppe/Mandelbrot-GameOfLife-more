@@ -13,17 +13,6 @@ public class Coords
 	private double toY;
 
 	/**
-	 * Konstruktør for et koordinatsystem med origo 0,0
-	 *
-	 * @param x bredde
-	 * @param y høyde
-	 */
-	public Coords(double x, double y)
-	{
-		this(0, x, 0, y);
-	}
-
-	/**
 	 * Konstruktør for koordinatsystem-beskrivelse
 	 *
 	 * @param fromX minste X koordinat i systemet
@@ -39,6 +28,10 @@ public class Coords
 		this.toY = toY;
 	}
 
+	/**
+	 * Sørge for 1:1 mellom høyde og bredde.
+	 * Ingen logikk her- den skalerer med utgangspunkt i X-retningen, og velger Y-range deretter.
+	 */
 	public void enforceProportions()
 	{
 		this.toY = this.fromY+(this.toX-this.fromX);

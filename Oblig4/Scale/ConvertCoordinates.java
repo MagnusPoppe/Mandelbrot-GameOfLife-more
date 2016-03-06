@@ -17,51 +17,6 @@ package Oblig4.Scale;
  */
 public class ConvertCoordinates
 {
-	private Coords from;
-	private Coords to;
-
-	private double scalingFactorX;
-	private double scalingFactorY;
-	private double scalingConstantX;
-	private double scalingConstantY;
-
-	/**
-	 * Opprette et konverterinngsobjekt dette kan konvertere et punkt fra et
-	 * koordinatsystem til et annet (x,y)-planet.
-	 * @param from koordinatsystemet man konverterer fra
-	 * @param to koordinatsystemet man konverterer til
-	 */
-	public ConvertCoordinates(Coords from, Coords to)
-	{
-		this.from = from;
-		this.to = to;
-		computeScalingFactors();
-	}
-
-	/**
-	 * Beregne skalerningsfaktorer (slik at man slipper det ved hver operasjon)
-	 */
-	private void computeScalingFactors()
-	{
-		scalingFactorX = computeXScalingFactor(from,to);
-		scalingFactorY = computeYScalingFactor(from,to);
-		scalingConstantX = computeScalingConstantX(to);
-		scalingConstantY = computeScalingConstantY(to);
-	}
-
-	/**
-	 * Konverter fra "from" koordinatsystem til "to" koordinatsystem
-	 * @param x - x koordinat
-	 * @param y - y koordinat
-	 * @return
-	 */
-	public double[] convert(double x, double y)
-	{
-		double newX = (x - from.getFromX())*scalingFactorX+scalingConstantX;
-		double newY = (y - from.getFromY())*scalingFactorY+scalingConstantY;
-		return new double[]{newX,newY};
-	}
-
 	public static Coords convert(Coords toScale, Coords from, Coords to)
 	{
 

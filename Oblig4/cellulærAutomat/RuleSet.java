@@ -62,10 +62,10 @@ public class RuleSet
         {
 
             if (
-                    rule.left == MATCHING[i].left &&
-                            rule.middle == MATCHING[i].middle &&
-                            rule.right == MATCHING[i].right
-                    )
+                rule.left == MATCHING[i].left &&
+                rule.middle == MATCHING[i].middle &&
+                rule.right == MATCHING[i].right
+            )
             {
                 output = userRules[i];
             }
