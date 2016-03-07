@@ -3,6 +3,7 @@ package Oblig4;/**
  */
 
 import Oblig4.Bifurcation.BifurcationPane;
+import Oblig4.Conway.Conway;
 import Oblig4.Mandelbrot.MandelPane;
 import Oblig4.cellulærAutomat.AutomatPane;
 import javafx.application.Application;
@@ -125,6 +126,14 @@ public class GUI extends Application
         conway.setTextFill(NOTSELECTED);
         conway.setFont(menufont);
         conway.setAlignment(Pos.CENTER);
+        conway.setOnMouseClicked(e->{
+            deselect();
+            stack.getChildren().remove(presenter);
+            Conway con = new Conway();
+            presenter = new AutomatPane(600,599);
+            stack.getChildren().add(presenter);
+            conway.setTextFill(SELECTED);
+        });
 
         //Adding to grid:
         menu = new GridPane();
