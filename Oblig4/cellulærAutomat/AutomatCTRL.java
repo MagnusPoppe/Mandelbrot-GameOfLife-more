@@ -175,7 +175,7 @@ public class AutomatCTRL implements ColorSchema
         {
             if (rect[i].getFill() == FALSECOLOR) userSelection[i] = true;
             else userSelection[i] = false;
-            System.out.println(userSelection[i]);
+            //System.out.println(userSelection[i]);
         }
 
     }

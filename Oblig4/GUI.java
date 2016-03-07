@@ -3,6 +3,7 @@ package Oblig4;/**
  */
 
 import Oblig4.Bifurcation.BifurcationPane;
+import Oblig4.Conway.Conway;
 import Oblig4.Mandelbrot.MandelPane;
 import Oblig4.cellulærAutomat.AutomatPane;
 import javafx.application.Application;
@@ -20,8 +21,8 @@ public class GUI extends Application
 {
 	//Globale elementer:
 	BorderPane root;
-	final double STAGEX = 600;
-	final double STAGEY = 680;
+	final double STAGEX = 800;
+	final double STAGEY = 880;
 
 	//Grafiske elementer til top-menyen:
 	GridPane menu;
@@ -121,21 +122,25 @@ public class GUI extends Application
 	private void addMenuEventHandlers()
 	{
 		mandelbrot.setOnMouseClicked(e -> {
-			deselectMenuLabels();
-			setGraphics(new MandelPane(600,600));
+			setGraphics(new MandelPane(800,800));
 			selectLabel(mandelbrot);
 		});
 
 		bifurcation.setOnMouseClicked(e -> {
-			deselectMenuLabels();
-			setGraphics(new BifurcationPane(600,600));
+			setGraphics(new BifurcationPane(800,800));
 			selectLabel(bifurcation);
 		});
 
 		cellulærAutomat.setOnMouseClicked(e -> {
-			deselectMenuLabels();
-			setGraphics(new AutomatPane(600,599));
+			setGraphics(new AutomatPane(800,799));
 			selectLabel(cellulærAutomat);
+		});
+
+		conway.setOnMouseClicked(e -> {
+			selectLabel(conway);
+			Conway con = new Conway();
+			setGraphics(con.getGUI());
+			root.setBottom(con.getMenu());
 		});
 	}
 
@@ -151,6 +156,7 @@ public class GUI extends Application
 				e = lbl;
 			}
 		});
+		root.setBottom(null);
 	}
 
 	/**
@@ -158,6 +164,7 @@ public class GUI extends Application
 	 */
 	private void selectLabel(Label label)
 	{
+		deselectMenuLabels();
 		label.setTextFill(SELECTED);
 	}
 

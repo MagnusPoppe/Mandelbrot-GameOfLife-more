@@ -11,9 +11,6 @@ public class ConwayModel {
     public ConwayModel(int size) {
         this.size = size;
         lifeArr = new boolean[size][size];
-        lifeArr[1][2] = true;
-        lifeArr[2][2] = true;
-        lifeArr[3][2] = true;
     }
 
     public void stepGeneration() {
@@ -46,6 +43,14 @@ public class ConwayModel {
     private boolean erLovligNabo(int x, int y) {
         if (x>=0 && x<size && y>=0 && y<size) return true;
         return false;
+    }
+    public void setPattern(String pattern) {
+        ConwayPattern p = new ConwayPattern(size, pattern);
+        lifeArr = p.generatePattern();
+    }
+    public void setSize(int size) {
+        this.size = size;
+        lifeArr = new boolean[size][size];
     }
     public void mark(int x, int y) {
         lifeArr[x][y] = !lifeArr[x][y];

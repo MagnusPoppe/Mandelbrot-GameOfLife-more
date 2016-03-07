@@ -1,10 +1,13 @@
 package Oblig4.Conway;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
@@ -14,19 +17,33 @@ import javafx.scene.paint.Color;
  */
 public class ConwayGUI extends GridPane {
     private StackPane[][] pArr;
+
     public ConwayGUI() {
-        //this.setStyle("-fx-background-color: red; -fx-border-color: blue");
+        this.setMaxHeight(800);
+        this.setMaxWidth(810);
     }
+
     public void buildGrid(int size) {
+        /*ColumnConstraints column = new ColumnConstraints();
+        column.setPercentWidth(810.0/size);
+        RowConstraints row = new RowConstraints();
+        row.setPercentHeight(800.0/size);
+        for (int i=0; i<size; i++) {
+            this.getColumnConstraints().add(column);
+            this.getRowConstraints().add(row);
+        }*/
+        this.getChildren().clear();
         pArr = new StackPane[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 StackPane pane = new StackPane();
-                pane.minWidthProperty().bind(this.widthProperty().divide(size));
-                pane.minHeightProperty().bind(this.heightProperty().divide(size));
-                pane.setId(i + ";" + j);
-                //pane.getChildren().add(new Label(i + " " + j));
-                //pane.setOnMousePressed(e -> press(e));
+                pane.setMaxWidth(810.0/size);
+                pane.setMaxHeight(790.0/size);
+                pane.setMinWidth(810.0/size);
+                pane.setMinHeight(790.0/size);
+                //pane.minWidthProperty().bind(this.widthProperty().divide(size+0.1*size));
+                //pane.minHeightProperty().bind(this.heightProperty().divide(size+0.1*size));
+                pane.setId(j + ";" + i);
                 this.add(pane, i, j);
                 pArr[i][j] = pane;
             }
@@ -36,7 +53,7 @@ public class ConwayGUI extends GridPane {
     public void updateGrid(boolean[][] lifeArr) {
         for (int i=0; i<lifeArr.length; i++) {
             for (int j=0; j<lifeArr[i].length; j++) {
-                mark(pArr[i][j], lifeArr[i][j]);
+                mark(pArr[j][i], lifeArr[i][j]);
 
                 if (lifeArr[i][j]) {
                 }
@@ -44,11 +61,11 @@ public class ConwayGUI extends GridPane {
         }
     }
     private void mark(StackPane p, boolean b) {
-        String standardCSS = "-fx-border-style:solid; -fx-border-width: 0.1";
+        String standardCSS = "-fx-border-style:solid; -fx-border-width: 0.1; -fx-width: 100%;";
         if (b) p.setStyle("-fx-background-color: lime;" + standardCSS);
         else p.setStyle("-fx-background-color: grey;" + standardCSS);
     }
-    public void setListener(EventHandler<MouseEvent> listener) {
+    public void setListener(EventHandler<Event> listener) {
         for (StackPane[] s : pArr) {
             for (StackPane p : s) {
                 p.setOnMousePressed(listener);
