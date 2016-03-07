@@ -13,7 +13,7 @@ import javafx.scene.text.TextAlignment;
  * Created by Jo Øivind Gjernes on 04.03.2016.
  *
  * GUI-element for å velge farger til mandelbrot.
- * Opprettes som en ferdig "HBox"
+ * Opprettes som en ferdig GridPane
  */
 public class SelectorPane extends GridPane
 {
@@ -24,6 +24,10 @@ public class SelectorPane extends GridPane
 	private Label green;
 	private ColorSelector cs;
 
+	/**
+	 * Opprette en "farge-valg" pane.
+	 * @param cs Farge-velger fra klassen som implementerer draw.
+	 */
 	public SelectorPane(ColorSelector cs)
 	{
 		super();
@@ -67,6 +71,9 @@ public class SelectorPane extends GridPane
 		grayWhite.setTextFill(GUI.SELECTED);
 	}
 
+	/**
+	 * Fjern markeringen på alle labels.
+	 */
 	private void deselect()
 	{
 		this.getChildren().forEach(e->{
@@ -78,6 +85,10 @@ public class SelectorPane extends GridPane
 		});
 	}
 
+	/**
+	 * Velg farge - gyldige valg definert i enum colorchoice
+	 * @param choice enum- fargevalg
+	 */
 	private void select(ColorChoice choice)
 	{
 		deselect();

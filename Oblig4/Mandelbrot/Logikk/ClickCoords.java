@@ -8,11 +8,11 @@ package Oblig4.Mandelbrot.Logikk;
  */
 public class ClickCoords
 {
-	public int x;
-	public int y;
+	public double x;
+	public double y;
 
 
-	public ClickCoords(int x, int y)
+	public ClickCoords(double x, double y)
 	{
 		this.x = x;
 		this.y = y;

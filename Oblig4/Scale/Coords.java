@@ -34,7 +34,14 @@ public class Coords
 	 */
 	public void enforceProportions()
 	{
-		this.toY = this.fromY+(this.toX-this.fromX);
+		double xLen = this.toX - this.fromX;
+		double yLen = this.toY - this.fromY;
+
+		if(xLen > yLen){
+			this.toY = this.fromY + xLen;
+		}else {
+			this.toX = this.fromX + yLen;
+		}
 	}
 
 	public double getFromX()

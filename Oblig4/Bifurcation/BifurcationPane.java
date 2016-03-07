@@ -59,6 +59,10 @@ public class BifurcationPane extends Pane implements ZoomInterface
 		imageView.setImage(bifurcationImage);
 	}
 
+	/**
+	 * Zoomer inn i bifurkasjonen.
+	 * @param zoomTo nye koordinater for bifurkajsons-funksjonen
+	 */
 	@Override
 	public void zoom(Coords zoomTo)
 	{
@@ -67,6 +71,10 @@ public class BifurcationPane extends Pane implements ZoomInterface
 		draw();
 	}
 
+	/**
+	 * Returnerer visningsflaten for bifurkasjons-funksjonen
+	 * @return imageview
+	 */
 	@Override
 	public ImageView getZoomObject()
 	{
