@@ -16,16 +16,20 @@ import java.util.ArrayList;
  */
 public class Bifurcation
 {
+	// -----
 	public static final Coords defaultBifurcationCoords = new Coords(2.4,4.0,0.0,1.0);
-	private Coords coords;
-	private bifurcFunction bifurc;
+	private static final int initialIterations = 75;
+	private static final int testIterations = 300;
 
 
+	// -----
 	private ArrayList<ArrayList<Boolean>> points;
 	private double xIncrement;
 	private double yIncrement;
-	private static final int initialIterations = 75;
-	private static final int testIterations = 300;
+	private Coords coords;
+
+	// funksjonen som brukes til å evaluere punkter
+	private bifurcFunction bifurc;
 
 
 	public Bifurcation(Coords drawCoords)
@@ -38,6 +42,13 @@ public class Bifurcation
 		this(coords, drawCoords, BifurcationFunction.FUNC1);
 	}
 
+	/**
+	 * Konstruktør.
+	 * Tegner punkter, slik at klassen er ferdig til bruk etter objektet er opprettet
+	 * @param coords koordinater man ønsker å se på (input til bifurkasjonsfunksjonen
+	 * @param drawCoords koordinatsystem det skal tegnes på
+	 * @param functionType type bifurkajjonsfunksjon (valg definert i enum)
+	 */
 	public Bifurcation(Coords coords, Coords drawCoords, BifurcationFunction functionType)
 	{
 		points = new ArrayList<>();
@@ -51,6 +62,11 @@ public class Bifurcation
 	}
 
 
+	/**
+	 * Iterere gjennom ønskete xn, r verdier.
+	 * Der xn er illustrert langs y-aksen
+	 * og r er illustrert langs x-aksen.
+	 */
 	private void computePoints()
 	{
 		// BoundsCheck.
@@ -63,11 +79,19 @@ public class Bifurcation
 		}
 	}
 
+	/**
+	 * Hent ut resultatet fra beregningen.
+	 * @return resultat.
+	 */
 	public ArrayList<ArrayList<Boolean>> getPoints()
 	{
 		return points;
 	}
 
+	/**
+	 * Hent ut hvilket "område" funksjonen regner ut.
+ 	 * @return koordinater
+	 */
 	public Coords getCoords()
 	{
 		return coords;
@@ -92,6 +116,10 @@ public class Bifurcation
 		return false;
 	}
 
+	/**
+	 * Velg hvilken funksjon som skal brukes til utregningen av punkter!
+	 * @param function man kan velge mellom "funksjon 1" og "funskjon 2" (definert i denne klassen)
+	 */
 	private void setBifurcationFunction(BifurcationFunction function)
 	{
 		switch(function)

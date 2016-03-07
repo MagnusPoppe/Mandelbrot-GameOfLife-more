@@ -20,6 +20,11 @@ public class Complex
 		imaginary = 0.0;
 	}
 
+	/**
+	 * Opprette et komplekst tall
+	 * @param real reell-del
+	 * @param imaginary imaginær-del
+	 */
 	public Complex(double real, double imaginary)
 	{
 		this.real = real;

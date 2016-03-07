@@ -17,9 +17,15 @@ package Oblig4.Scale;
  */
 public class ConvertCoordinates
 {
+	/**
+	 * Konvertere et koordinatobjekt fra et koordinatsystem til et annet.
+	 * @param toScale koordinater man ønsker å "skalere"
+	 * @param from koordinatsystemet koordinatetene man ønsker å skalere er definert i
+	 * @param to koordinatsystemet man skal konvertere til.
+	 * @return skalert koordinater
+	 * */
 	public static Coords convert(Coords toScale, Coords from, Coords to)
 	{
-
 		double scalingFactorX = computeXScalingFactor(from,to);
 		double scalingFactorY = computeYScalingFactor(from,to);
 		double scalingConstantX = computeScalingConstantX(to);
@@ -32,17 +38,32 @@ public class ConvertCoordinates
 		return new Coords(newX,newToX,newY,newToY);
 	}
 
+	/**
+	 * Regne ut inkrement nødvendig i et koordinatsystem for å matche antall punkter i et annet.
+	 * Brukes for å regne ut inkrement for mandelbrot, og bifurkasjon løkker.
+	 * I koordinatsystemets X-retning
+	 * @param from typisk: bilde-koordinater eksempel: {0, 800, 0, 800} (i.e fra 0 til bredde-1, fra 0 til høyde-1)
+	 * @param to koordinatsystemm for en funksjon f.eks {0, 1, 0, 1}
+	 * @return 1/800
+	 */
 	public static double computeXIncrement(Coords from, Coords to)
 	{
 		return computeXScalingFactor(to,from);
 	}
 
+	/**
+	 * Regne ut inkrement nødvendig i et koordinatsystem for å matche antall punkter i et annet.
+	 * Brukes for å regne ut inkrement for mandelbrot, og bifurkasjon løkker.
+	 * I koordinatsystemets Y-retning
+	 * @param from typisk: bilde-koordinater eksempel: {0, 800, 0, 800} (i.e fra 0 til bredde-1, fra 0 til høyde-1)
+	 * @param to koordinatsystemm for en funksjon f.eks {0, 1, 0, 1}
+	 * @return 1/800
+	 */
 	public static double computeYIncrement(Coords from, Coords to)
 	{
 		return computeYScalingFactor(to,from);
 	}
 
-// --------- Lagt til for å unngå duplisering av kode!
 	private static double computeXScalingFactor(Coords from, Coords to)
 	{
 		return (to.getToX()-to.getFromX())/(from.getToX()-from.getFromX());

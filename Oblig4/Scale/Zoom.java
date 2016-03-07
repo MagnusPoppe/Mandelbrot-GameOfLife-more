@@ -40,12 +40,22 @@ public class Zoom
 		initEventHandlers();
 	}
 
+	/**
+	 *
+	 * @param from koordinatsystem man regner fra (typisk bilde-koordinater)
+	 * @param to koordinatsystem man regner til (mandelbrot eller bifurk)
+	 * @param parent "controlleren"
+	 * @param flipYAxis hvis TRUE blir input verdien i Y-aksen flippet.
+	 */
 	public Zoom(Coords from, Coords to, ZoomInterface parent, boolean flipYAxis)
 	{
 		this(from,to,parent);
 		flipped=flipYAxis;
 	}
 
+	/**
+	 * Initialiser et gjennomsiktig rektangel med sort omkrets.
+	 */
 	private void initRect()
 	{
 		rectangle = null;
@@ -78,6 +88,11 @@ public class Zoom
 		}
 	}
 
+	/**
+	 * Legger til event-handlere for styring av zoom.
+	 * Dette leges til på "parent" sitt imageview objekt, slik at man kun får opp "zoom-rektangel" på flaten der det er
+	 * relevant å zoome.
+	 */
 	private void initEventHandlers()
 	{
 		if(parent instanceof Pane){
@@ -85,7 +100,7 @@ public class Zoom
 		parent.getZoomObject().setOnMousePressed(e->{
 			rectangle.setX(e.getX());
 			rectangle.setY(e.getY());
-			click.push(new ClickCoords((int)(e.getSceneX()), (int)(flip(e.getY()))));
+			click.push(new ClickCoords(e.getSceneX(), flip(e.getY())));
 			p.getChildren().add(rectangle);
 		});
 
@@ -99,7 +114,7 @@ public class Zoom
 			p.getChildren().remove(rectangle);
 			if(!click.isEmpty()){
 				ClickCoords click1 = click.pop();
-				to = getCoordsFromClick(click1, new ClickCoords((int)e3.getSceneX(),(int)flip(e3.getSceneY())));
+				to = getCoordsFromClick(click1, new ClickCoords(e3.getSceneX(),flip(e3.getSceneY())));
 				parent.zoom(to);
 				p.getChildren().remove(rectangle);
 				initRect();
@@ -125,12 +140,18 @@ public class Zoom
 		return coordinate;
 	}
 
+	/**
+	 * Regner om to klikk-punkter til Coords objekt, her antas det at de to muse-posisjonene (ClickCoords)
+	 * utgjør to motsatte hjørner i et rektangel. rekkefølgen på parameterene spiller ingen rolle.
+	 * @param click1 koordinater for et "klikk"
+	 * @param click2 koordinater for et "klikk"
+	 * @return Coords omregnet fra "from" koordinater til "to" koordinater
+	 */
 	private Coords getCoordsFromClick(ClickCoords click1, ClickCoords click2)
 	{
 		Coords coords = new Coords(Math.min(click1.x,click2.x),Math.max(click1.x,click2.x),Math.min(click1.y,click2.y),Math.max(click1.y,click2.y));
-		Coords converted = ConvertCoordinates.convert(coords, from, to);
-		converted.enforceProportions();
-		return converted;
+		coords.enforceProportions(); // Sørger for at "utsnittet" beholder 1:1 forhold mellom høyde og bredde. Funksjonen velger lengste sidekant som basis
+		return ConvertCoordinates.convert(coords, from, to);
 	}
 
 

@@ -61,7 +61,6 @@ public class MandelPane extends Pane implements Draw,ZoomInterface
 
 		PixelWriter pxl = figureImage.getPixelWriter();
 
-
 		for(int y = 0; y< figureImage.getHeight()&&y<mandelbrot.getPointLines().size(); ++y)
 		{
 			ArrayList<Integer> pointLine = mandelbrot.getPointLines().get(y);
@@ -75,19 +74,20 @@ public class MandelPane extends Pane implements Draw,ZoomInterface
 	}
 
 	/**
-	 * Zoom ???
+	 * Zooming av mandelbrot objektet
 	 * @param zoomTo
 	 */
 	public void zoom(Coords zoomTo)
 	{
 		try {
+			// Opprett nye punkter for mandelbrot funksjonen
 			mandelbrot = new Mandelbrot(zoomTo, figureImage.getCoords());
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			mandelbrot = new Mandelbrot(Mandelbrot.defaultMandelbrotCoords, figureImage.getCoords());
 			zoom = new Zoom(figureImage.getCoords(), Mandelbrot.defaultMandelbrotCoords, this);
 		}
-		draw(); // Tegn bildet på nytt
+		draw(); // oppdater grafikk
 	}
 
 	@Override

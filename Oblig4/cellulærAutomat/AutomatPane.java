@@ -6,6 +6,8 @@ import javafx.scene.layout.VBox;
 
 /**
  * Created by Jo Øivind Gjernes on 05.03.2016.
+ *
+ * Laget en Pane for å samle konstrueringen av Magnus sin cellulære automat.
  */
 public class AutomatPane extends Pane
 {
