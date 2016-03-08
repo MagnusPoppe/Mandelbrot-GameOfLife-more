@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
  */
 public interface ColorSchema
 {
-    final static Color TRUECOLOR = Color.WHITE;
-    final static Color FALSECOLOR = Color.CRIMSON;
+    final static Color TRUECOLOR = Color.GREY;
+    final static Color FALSECOLOR = Color.LIMEGREEN;
     final static Color BORDERCOLOR = Color.BLACK;
 }

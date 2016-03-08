@@ -20,7 +20,7 @@ public class ConwayGUI extends GridPane {
 
     public ConwayGUI() {
         this.setMaxHeight(800);
-        this.setMaxWidth(810);
+        this.setMaxWidth(800);
     }
 
     public void buildGrid(int size) {
@@ -37,10 +37,10 @@ public class ConwayGUI extends GridPane {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 StackPane pane = new StackPane();
-                pane.setMaxWidth(810.0/size);
-                pane.setMaxHeight(790.0/size);
-                pane.setMinWidth(810.0/size);
-                pane.setMinHeight(790.0/size);
+                pane.setMaxWidth(800.0/size);
+                pane.setMaxHeight(800.0/size);
+                pane.setMinWidth(800.0/size);
+                pane.setMinHeight(800.0/size);
                 //pane.minWidthProperty().bind(this.widthProperty().divide(size+0.1*size));
                 //pane.minHeightProperty().bind(this.heightProperty().divide(size+0.1*size));
                 pane.setId(j + ";" + i);
@@ -61,8 +61,8 @@ public class ConwayGUI extends GridPane {
         }
     }
     private void mark(StackPane p, boolean b) {
-        String standardCSS = "-fx-border-style:solid; -fx-border-width: 0.1; -fx-width: 100%;";
-        if (b) p.setStyle("-fx-background-color: lime;" + standardCSS);
+        String standardCSS = "-fx-border-style:solid; -fx-border-width: 0.1;";
+        if (b) p.setStyle("-fx-background-color: limegreen;" + standardCSS);
         else p.setStyle("-fx-background-color: grey;" + standardCSS);
     }
     public void setListener(EventHandler<Event> listener) {

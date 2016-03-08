@@ -204,7 +204,7 @@ public class AutomatCTRL implements ColorSchema
     private void setListener(Rectangle r)
     {
         //Setting actionlistener:
-        r.setOnMouseClicked(e -> {
+        r.setOnMousePressed(e -> {
             //Changing the colors:
             if (r.getFill() == FALSECOLOR) r.setFill(TRUECOLOR);
             else r.setFill(FALSECOLOR);
