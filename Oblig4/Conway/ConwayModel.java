@@ -26,7 +26,7 @@ public class ConwayModel {
         for (int i=0; i<size; i++) {
             for (int j=0; j<size; j++) {
                 int naboer = naboer(i, j);
-                if (lifeArr[i][j] && naboer == 2 || naboer == 3) newGen[i][j] = true;
+                if (lifeArr[i][j] && (naboer == 2 || naboer == 3)) newGen[i][j] = true;
                 else if (!lifeArr[i][j] && naboer == 3) newGen[i][j] = true;
                 else newGen[i][j] = false;
             }

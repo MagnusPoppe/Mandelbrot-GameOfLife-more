@@ -1,5 +1,8 @@
-package Oblig4;/**
- * Created by Magnu on 25.02.2016.
+package Oblig4;
+
+
+/**
+ * @author Magnus, Jo og Morten
  */
 
 import Oblig4.Bifurcation.BifurcationPane;
@@ -10,7 +13,6 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -20,22 +22,27 @@ import javafx.stage.Stage;
 public class GUI extends Application
 {
 	//Globale elementer:
-	BorderPane root;
-	final double STAGEX = 800;
-	final double STAGEY = 880;
+	private BorderPane root;
+	private final static double STAGEX = 790;
+	private final static double STAGEY = 880;
+	private final static int WINDOWX = 800;
+	private final static int WINDOWY = 800;
 
 	//Grafiske elementer til top-menyen:
-	GridPane menu;
-	Label mandelbrot, bifurcation, cellulærAutomat, conway;
-	public static final Color NOTSELECTED = Color.DARKGRAY;
+	private GridPane menu;
+	private Label mandelbrot, bifurcation, cellulærAutomat, conway;
+	public static final Color NOTSELECTED = Color.rgb(120,120,120);
 	public static final Color SELECTED = Color.SKYBLUE;
 	public static final Font menufont = new Font("Roboto, Helvetica, Arial", 18);
 
 	//Grafiske elementer til tegneområdet:
-	StackPane stack;
-	Group markings;
-	Pane presenter;
+	private StackPane stack;
+	private Group markings;
+	private Pane presenter;
 
+	/**
+	 * Entrypoint
+	 */
 	public static void main(String[] args)
 	{
 		launch(args);
@@ -53,8 +60,6 @@ public class GUI extends Application
 		stage.setResizable(false);
 		stage.setTitle("Obligatorisk øving #4");
 		stage.show();
-
-
 	}
 
 	/**
@@ -85,7 +90,7 @@ public class GUI extends Application
 	public void createMenu()
 	{
 		//Creating menu elements:
-		mandelbrot = new Label("Mandelbrot");
+		mandelbrot = new Label("  Mandelbrot");
 		bifurcation = new Label("Bifurcation");
 		cellulærAutomat = new Label("Cellulær automat");
 		conway = new Label("Conway's \"game of life\"");
@@ -122,17 +127,17 @@ public class GUI extends Application
 	private void addMenuEventHandlers()
 	{
 		mandelbrot.setOnMouseClicked(e -> {
-			setGraphics(new MandelPane(800,800));
+			setGraphics(new MandelPane(WINDOWX,WINDOWY));
 			selectLabel(mandelbrot);
 		});
 
 		bifurcation.setOnMouseClicked(e -> {
-			setGraphics(new BifurcationPane(800,800));
+			setGraphics(new BifurcationPane(WINDOWX,WINDOWY));
 			selectLabel(bifurcation);
 		});
 
 		cellulærAutomat.setOnMouseClicked(e -> {
-			setGraphics(new AutomatPane(800,799));
+			setGraphics(new AutomatPane(WINDOWX,WINDOWY));
 			selectLabel(cellulærAutomat);
 		});
 
